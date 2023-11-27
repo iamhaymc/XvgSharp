@@ -1,21 +1,19 @@
 ﻿namespace Xvg;
 
-public class ImageNode : SceneNode, IShapeNode<ImageNode>, IFrameableNode<ImageNode>, IFilterableNode<ImageNode>
+public class ImageNode : SceneNode, 
+  IAliasableNode<ImageNode>, IFrameableNode<ImageNode>, IFilterableNode<ImageNode>
 {
   public override SceneNodeType Type => SceneNodeType.Image;
 
   #region [Properties]
 
+  public bool AntiAlias { get; set; } = true;
   public bool Abstract { get; set; } = false;
   public string Url { get; set; }
   public Box Frame { get; set; } = Box.Zero;
   public AspectType Aspect { get; set; } = AspectStyle.Default;
   public Transform Transform { get; set; } = Transform.Identity;
-  public Vector2 ShadowOffset { get; set; } = ShadowStyle.DefaultOffset;
-  public float ShadowSigma { get; set; } = ShadowStyle.DefaultSigma;
-  public float ShadowOpacity { get; set; } = ShadowStyle.DefaultOpacity;
   public string FilterId { get; set; } = null;
-  public bool AntiAlias { get; set; } = true;
 
   #endregion
 

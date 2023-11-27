@@ -2,7 +2,7 @@
 
 public enum SceneNodeType
 {
-  View, Group, Path, Text, Image, Copy, Filter
+  Filter, View, Group, Path, Text, Image, Copy, 
 }
 
 public interface ISceneNode
@@ -41,6 +41,13 @@ public interface IAbstractableNode<TNode>
   TNode UseAbstraction(bool truth);
 }
 
+public interface IAliasableNode<TNode> : ISceneNode
+  where TNode : ISceneNode
+{
+  bool AntiAlias { get; set; }
+  TNode UseAntiAliasing(bool truth);
+}
+
 public interface ITransformableNode<TNode> : ISceneNode
   where TNode : ISceneNode
 {
@@ -58,7 +65,7 @@ public interface IFrameableNode<TNode> : ISceneNode
   public TNode UseFrame(Vector2 size);
 }
 
-public interface IFillableNode<TNode>: ISceneNode
+public interface IFillableNode<TNode> : ISceneNode
   where TNode : ISceneNode
 {
   ColorType FillColor { get; set; }
@@ -76,22 +83,9 @@ public interface IStrokableNode<TNode> : ISceneNode
   TNode UseStroke(ColorType color, StrokeJointType join, StrokeCapType cap, float width);
 }
 
-public interface IFilterableNode<TNode>: ISceneNode
+public interface IFilterableNode<TNode> : ISceneNode
+  where TNode : ISceneNode
 {
   string FilterId { get; set; }
   TNode UseFilter(string id);
-}
-
-public interface ILayoutNode<TNode> : ITransformableNode<TNode>, IAbstractableNode<TNode>
-  where TNode : ISceneNode
-{
-  bool AntiAlias { get; set; }
-  TNode UseAntiAliasing(bool truth);
-}
-
-public interface IShapeNode<TNode> : ITransformableNode<TNode>, IAbstractableNode<TNode>
-  where TNode : ISceneNode
-{
-  bool AntiAlias { get; set; }
-  TNode UseAntiAliasing(bool truth);
 }

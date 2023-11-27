@@ -71,31 +71,3 @@ public static partial class FontStyle
     }
   }
 }
-
-public static partial class FontSizeStyle
-{
-  public const float Size0Factor = 0.016f; // ~ 10px (600 / pixels size)
-  public const float Size1Factor = 0.02f;  // ~ 12px
-  public const float Size2Factor = 0.026f; // ~ 16px
-  public const float Size3Factor = 0.040f; // ~ 24px
-  public const float Size4Factor = 0.053f; // ~ 32px
-  public const float Size5Factor = 0.080f; // ~ 48px
-
-  public static float ToSize0(Vector2 resolution)
-    => Math.Min(resolution.X, resolution.Y) * Size0Factor;
-
-  public static float ToSize1(Vector2 resolution)
-    => Math.Min(resolution.X, resolution.Y) * Size1Factor;
-
-  public static float ToSize2(Vector2 resolution)
-    => Math.Min(resolution.X, resolution.Y) * Size2Factor;
-
-  public static float ToSize3(Vector2 resolution)
-    => Math.Min(resolution.X, resolution.Y) * Size3Factor;
-
-  public static float ToSize4(Vector2 resolution)
-    => Math.Min(resolution.X, resolution.Y) * Size4Factor;
-
-  public static float ToSize5(Vector2 resolution)
-    => Math.Min(resolution.X, resolution.Y) * Size5Factor;
-}

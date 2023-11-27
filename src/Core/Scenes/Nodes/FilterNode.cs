@@ -6,10 +6,11 @@ public class FilterNode : SceneNode
 
   #region [Properties]
 
-  public Vector2 ShadowOffset { get; set; } = ShadowStyle.DefaultOffset;
-  public float ShadowSigma { get; set; } = ShadowStyle.DefaultSigma;
-  public float ShadowOpacity { get; set; } = ShadowStyle.DefaultOpacity;
-
+  public bool ShadowEnable {get; set; } = FilterStyle.DefaultShadowEnable;
+  public float ShadowSigma { get; set; } = FilterStyle.DefaultShadowSigma;
+  public float ShadowOpacity { get; set; } = FilterStyle.DefaultShadowOpacity;
+  public Vector2 ShadowOffset { get; set; } = FilterStyle.DefaultShadowOffset;
+  
   #endregion
 
   #region [Edit]

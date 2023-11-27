@@ -1,12 +1,14 @@
 ﻿namespace Xvg;
 
-public class TextNode : SceneNode, IShapeNode<TextNode>, IFillableNode<TextNode>, IFilterableNode<TextNode>
+public class TextNode : SceneNode, 
+  IAliasableNode<TextNode>, IFillableNode<TextNode>, IFilterableNode<TextNode>
 {
   public override SceneNodeType Type => SceneNodeType.Text;
 
   #region [Properties]
 
   public bool Abstract { get; set; } = false;
+  public bool AntiAlias { get; set; } = true;
   public string Value { get; set; }
   public FontFamilyType FontFamily { get; set; } = Xvg.FontStyle.DefaultFamily;
   public FontWeightType FontWeight { get; set; } = Xvg.FontStyle.DefaultWeight;
@@ -18,11 +20,7 @@ public class TextNode : SceneNode, IShapeNode<TextNode>, IFillableNode<TextNode>
   public TextAlignType Align { get; set; } = TextStyle.DefaultAlign;
   public ColorType FillColor { get; set; } = FillStyle.DefaultColor;
   public FillRuleType FillRule { get; set; } = FillStyle.DefaultRule;
-  public Vector2 ShadowOffset { get; set; } = ShadowStyle.DefaultOffset;
-  public float ShadowSigma { get; set; } = ShadowStyle.DefaultSigma;
-  public float ShadowOpacity { get; set; } = ShadowStyle.DefaultOpacity;
   public string FilterId { get; set; } = null;
-  public bool AntiAlias { get; set; } = true;
 
   #endregion
 

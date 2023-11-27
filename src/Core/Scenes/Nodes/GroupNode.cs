@@ -1,18 +1,16 @@
 ﻿namespace Xvg;
 
-public class GroupNode : SceneNode, ILayoutNode<GroupNode>, IShapeNode<GroupNode>, IFilterableNode<GroupNode>
+public class GroupNode : SceneNode, 
+  IAliasableNode<GroupNode>, IFilterableNode<GroupNode>
 {
   public override SceneNodeType Type => SceneNodeType.Group;
 
   #region [Properties]
 
   public bool Abstract { get; set; } = false;
-  public Transform Transform { get; set; } = Transform.Identity;
-  public Vector2 ShadowOffset { get; set; } = ShadowStyle.DefaultOffset;
-  public float ShadowSigma { get; set; } = ShadowStyle.DefaultSigma;
-  public float ShadowOpacity { get; set; } = ShadowStyle.DefaultOpacity;
-  public string FilterId { get; set; } = null;
   public bool AntiAlias { get; set; } = true;
+  public Transform Transform { get; set; } = Transform.Identity;
+  public string FilterId { get; set; } = null;
 
   #endregion
 

@@ -1,12 +1,14 @@
 ﻿namespace Xvg;
 
-public class PathNode : SceneNode, IShapeNode<PathNode>, IFillableNode<PathNode>, IStrokableNode<PathNode>, IFilterableNode<PathNode>
+public class PathNode : SceneNode, 
+  IAliasableNode<PathNode>, IFillableNode<PathNode>, IStrokableNode<PathNode>, IFilterableNode<PathNode>
 {
   public override SceneNodeType Type => SceneNodeType.Path;
 
   #region [Properties]
 
   public bool Abstract { get; set; } = false;
+  public bool AntiAlias { get; set; } = true;
   public VgPath Value { get; set; } = new VgPath();
   public Transform Transform { get; set; } = Transform.Identity;
   public ColorType FillColor { get; set; } = FillStyle.DefaultColor;
@@ -15,11 +17,7 @@ public class PathNode : SceneNode, IShapeNode<PathNode>, IFillableNode<PathNode>
   public StrokeJointType StrokeJoint { get; set; } = StrokeStyle.DefaultJoint;
   public StrokeCapType StrokeCap { get; set; } = StrokeStyle.DefaultCap;
   public float StrokeWidth { get; set; } = StrokeStyle.DefaultWidth;
-  public Vector2 ShadowOffset { get; set; } = ShadowStyle.DefaultOffset;
-  public float ShadowSigma { get; set; } = ShadowStyle.DefaultSigma;
-  public float ShadowOpacity { get; set; } = ShadowStyle.DefaultOpacity;
   public string FilterId { get; set; } = null;
-  public bool AntiAlias { get; set; } = true;
 
   #endregion
 
