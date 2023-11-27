@@ -1,6 +1,6 @@
 ﻿namespace Xvg;
 
-public class GroupNode : SceneNode, ILayoutNode<GroupNode>, IShapeNode<GroupNode>
+public class GroupNode : SceneNode, ILayoutNode<GroupNode>, IShapeNode<GroupNode>, IFilterableNode<GroupNode>
 {
   public override SceneNodeType Type => SceneNodeType.Group;
 
@@ -11,6 +11,7 @@ public class GroupNode : SceneNode, ILayoutNode<GroupNode>, IShapeNode<GroupNode
   public Vector2 ShadowOffset { get; set; } = ShadowStyle.DefaultOffset;
   public float ShadowSigma { get; set; } = ShadowStyle.DefaultSigma;
   public float ShadowOpacity { get; set; } = ShadowStyle.DefaultOpacity;
+  public string FilterId { get; set; } = null;
   public bool AntiAlias { get; set; } = true;
 
   #endregion
@@ -41,6 +42,12 @@ public class GroupNode : SceneNode, ILayoutNode<GroupNode>, IShapeNode<GroupNode
   public GroupNode UseShadow(Vector2 offset, float sigma, float opacity)
   {
     throw new NotImplementedException();
+  }
+
+  public GroupNode UseFilter(string filterId)
+  {
+    FilterId = filterId;
+    return this;
   }
 
   public GroupNode UseAntiAliasing(bool truth)

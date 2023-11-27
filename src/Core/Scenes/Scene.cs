@@ -13,7 +13,4 @@ public class Scene
 
   public IEnumerable<ISceneNode> YieldNodes()
     => Root.YieldNodes();
-
-  public static SceneBuilder IntoRoot(Action<ViewNode> edit = null)
-     => new SceneBuilder().IntoView(edit);
 }

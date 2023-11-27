@@ -1,6 +1,7 @@
 ﻿namespace Xvg;
 
-public class ViewNode : SceneNode, ILayoutNode<ViewNode>, IFrameableNode<ViewNode>, IFillableNode<ViewNode>
+public class ViewNode : SceneNode, 
+  ILayoutNode<ViewNode>, IFrameableNode<ViewNode>, IFillableNode<ViewNode>, IFilterableNode<ViewNode>
 {
   public override SceneNodeType Type => SceneNodeType.View;
 
@@ -13,6 +14,7 @@ public class ViewNode : SceneNode, ILayoutNode<ViewNode>, IFrameableNode<ViewNod
   public Transform Transform { get; set; } = Transform.Identity;
   public ColorType FillColor { get; set; } = FillStyle.DefaultColor;
   public FillRuleType FillRule { get; set; } = FillStyle.DefaultRule;
+  public string FilterId { get; set; } = null;
   public bool AntiAlias { get; set; } = true;
 
   #endregion
@@ -79,6 +81,12 @@ public class ViewNode : SceneNode, ILayoutNode<ViewNode>, IFrameableNode<ViewNod
   {
     FillColor = color;
     FillRule = rule;
+    return this;
+  }
+
+  public ViewNode UseFilter(string filterId)
+  {
+    FilterId = filterId;
     return this;
   }
 

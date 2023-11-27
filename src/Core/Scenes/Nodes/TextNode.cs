@@ -1,6 +1,6 @@
 ﻿namespace Xvg;
 
-public class TextNode : SceneNode, IShapeNode<TextNode>, IFillableNode<TextNode>
+public class TextNode : SceneNode, IShapeNode<TextNode>, IFillableNode<TextNode>, IFilterableNode<TextNode>
 {
   public override SceneNodeType Type => SceneNodeType.Text;
 
@@ -21,6 +21,7 @@ public class TextNode : SceneNode, IShapeNode<TextNode>, IFillableNode<TextNode>
   public Vector2 ShadowOffset { get; set; } = ShadowStyle.DefaultOffset;
   public float ShadowSigma { get; set; } = ShadowStyle.DefaultSigma;
   public float ShadowOpacity { get; set; } = ShadowStyle.DefaultOpacity;
+  public string FilterId { get; set; } = null;
   public bool AntiAlias { get; set; } = true;
 
   #endregion
@@ -79,9 +80,10 @@ public class TextNode : SceneNode, IShapeNode<TextNode>, IFillableNode<TextNode>
     return this;
   }
 
-  public TextNode UseShadow(Vector2 offset, float sigma, float opacity)
+  public TextNode UseFilter(string filterId)
   {
-    throw new NotImplementedException();
+    FilterId = filterId;
+    return this;
   }
 
   public TextNode UseAntiAliasing(bool truth)

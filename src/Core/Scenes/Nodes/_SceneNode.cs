@@ -2,7 +2,7 @@
 
 public enum SceneNodeType
 {
-  View, Group, Path, Text, Image, Copy
+  View, Group, Path, Text, Image, Copy, Filter
 }
 
 public interface ISceneNode
@@ -76,6 +76,12 @@ public interface IStrokableNode<TNode> : ISceneNode
   TNode UseStroke(ColorType color, StrokeJointType join, StrokeCapType cap, float width);
 }
 
+public interface IFilterableNode<TNode>: ISceneNode
+{
+  string FilterId { get; set; }
+  TNode UseFilter(string id);
+}
+
 public interface ILayoutNode<TNode> : ITransformableNode<TNode>, IAbstractableNode<TNode>
   where TNode : ISceneNode
 {
@@ -86,10 +92,6 @@ public interface ILayoutNode<TNode> : ITransformableNode<TNode>, IAbstractableNo
 public interface IShapeNode<TNode> : ITransformableNode<TNode>, IAbstractableNode<TNode>
   where TNode : ISceneNode
 {
-  Vector2 ShadowOffset { get; set; }
-  float ShadowSigma { get; set; }
-  float ShadowOpacity { get; set; }
   bool AntiAlias { get; set; }
-  TNode UseShadow(Vector2 offset, float sigma, float opacity);
   TNode UseAntiAliasing(bool truth);
 }

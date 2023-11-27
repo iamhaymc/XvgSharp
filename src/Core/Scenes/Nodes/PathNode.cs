@@ -1,6 +1,6 @@
 ﻿namespace Xvg;
 
-public class PathNode : SceneNode, IShapeNode<PathNode>, IFillableNode<PathNode>, IStrokableNode<PathNode>
+public class PathNode : SceneNode, IShapeNode<PathNode>, IFillableNode<PathNode>, IStrokableNode<PathNode>, IFilterableNode<PathNode>
 {
   public override SceneNodeType Type => SceneNodeType.Path;
 
@@ -18,6 +18,7 @@ public class PathNode : SceneNode, IShapeNode<PathNode>, IFillableNode<PathNode>
   public Vector2 ShadowOffset { get; set; } = ShadowStyle.DefaultOffset;
   public float ShadowSigma { get; set; } = ShadowStyle.DefaultSigma;
   public float ShadowOpacity { get; set; } = ShadowStyle.DefaultOpacity;
+  public string FilterId { get; set; } = null;
   public bool AntiAlias { get; set; } = true;
 
   #endregion
@@ -67,9 +68,10 @@ public class PathNode : SceneNode, IShapeNode<PathNode>, IFillableNode<PathNode>
     return this;
   }
 
-  public PathNode UseShadow(Vector2 offset, float sigma, float opacity)
+  public PathNode UseFilter(string filterId)
   {
-    throw new NotImplementedException();
+    FilterId = filterId;
+    return this;
   }
 
   public PathNode UseAntiAliasing(bool truth)

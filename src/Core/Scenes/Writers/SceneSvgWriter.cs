@@ -3,53 +3,55 @@ using System.Xml.Linq;
 
 namespace Xvg;
 
-public class VgSceneSvgWriter
+public class SceneSvgWriter
 {
+  public const bool DefaultIndent = true;
+
   public bool _embedImages;
   public bool _embedFonts;
 
   private Dictionary<string, string> _fontUrls { get; set; }
 
-  public VgSceneSvgWriter()
+  public SceneSvgWriter()
   {
     UseImageEmbedding(true);
     UseFontEmbedding(false);
     _fontUrls = new Dictionary<string, string>();
   }
 
-  public VgSceneSvgWriter UseImageEmbedding(bool truth)
+  public SceneSvgWriter UseImageEmbedding(bool truth)
   {
     _embedImages = truth;
     return this;
   }
 
-  public VgSceneSvgWriter UseFontEmbedding(bool truth)
+  public SceneSvgWriter UseFontEmbedding(bool truth)
   {
     _embedFonts = truth;
     return this;
   }
 
-  public VgSceneSvgWriter BindFont(string family, string url)
+  public SceneSvgWriter BindFont(string family, string url)
   {
     _fontUrls[family] = url;
     return this;
   }
 
-  public XDocument WriteSvgDocument(Scene scene)
+  public FileInfo WriteSvgFile(Scene scene, string path, bool indent = DefaultIndent)
   {
-    return ExportScene(scene);
+    FsFile.StringOut(path, WriteSvgString(scene, indent));
+    return new FileInfo(path);
   }
 
-  public string WriteSvgString(Scene scene, bool indent = true)
+  public string WriteSvgString(Scene scene, bool indent = DefaultIndent)
   {
     XDocument doc = WriteSvgDocument(scene);
     return doc.ToString(indent ? SaveOptions.None : SaveOptions.DisableFormatting);
   }
 
-  public FileInfo WriteSvgFile(Scene scene, string path, bool indent = true)
+  public XDocument WriteSvgDocument(Scene scene)
   {
-    File.WriteAllText(path, WriteSvgString(scene, indent));
-    return new FileInfo(path);
+    return ExportScene(scene);
   }
 
   private XDocument ExportScene(Scene scene)
@@ -267,8 +269,7 @@ public class VgSceneSvgWriter
   private string SerializeTextRendering(bool antialias)
     => antialias ? "auto" : "geometricPrecision";
 
-  private string SerializeTransform(Transform transform,
-    Vector2? offset = null, Vector2? origin = null)
+  private string SerializeTransform(Transform transform, Vector2? offset = null, Vector2? origin = null)
     => string
         .Join(" ",
           SerializeTranslation(transform, offset),
@@ -276,96 +277,33 @@ public class VgSceneSvgWriter
           SerializeScale(transform))
         .Trim();
 
-  private string SerializeTranslation(Transform transform,
-    Vector2? offset = null)
+  private string SerializeTranslation(Transform transform, Vector2? offset = null)
   {
     Vector2 translation = transform.Translation + (offset ?? Vector2.Zero);
     return $"translate({translation.X} {translation.Y})";
   }
 
-  private string SerializeRotation(Transform transform,
-    Vector2? origin = null)
+  private string SerializeRotation(Transform transform, Vector2? origin = null)
     => $"rotate({transform.Rotation} {origin?.X ?? 0} {origin?.Y ?? 0})";
 
   private string SerializeScale(Transform transform)
     => $"scale({transform.Scale.X} {transform.Scale.Y})";
 }
 
-public static class VgSceneSvgWriterExtensions
+public static class SceneSvgWriterExtensions
 {
-  public static XDocument ToSvgDocument(this Scene self, VgSceneSvgWriter writer = null)
+  public static FileInfo ToSvgFile(this Scene self, string path, bool indent = SceneSvgWriter.DefaultIndent, SceneSvgWriter writer = null)
   {
-    writer = writer ?? new VgSceneSvgWriter();
-    return writer.WriteSvgDocument(self);
+    return (writer ?? new SceneSvgWriter()).WriteSvgFile(self, path, indent);
   }
 
-  public static string ToSvgString(this Scene self, bool indent = true, VgSceneSvgWriter writer = null)
+  public static string ToSvgString(this Scene self, bool indent = SceneSvgWriter.DefaultIndent, SceneSvgWriter writer = null)
   {
-    writer = writer ?? new VgSceneSvgWriter();
-    return writer.WriteSvgString(self, indent);
+    return (writer ?? new SceneSvgWriter()).WriteSvgString(self, indent);
   }
 
-  public static FileInfo ToSvgFile(this Scene self, string path, bool indent = true, VgSceneSvgWriter writer = null)
+  public static XDocument ToSvgDocument(this Scene self, SceneSvgWriter writer = null)
   {
-    File.WriteAllText(path, self.ToSvgString(indent, writer));
-    return new FileInfo(path);
-  }
-}
-
-public static class XSvgDocument
-{
-  public static readonly XNamespace SvgNamespace = @"http://www.w3.org/2000/svg";
-  public static readonly string SvgVersion = "1.1";
-
-  public static XDocument Create()
-  {
-    XElement root = XSvgElement.Create("svg")
-      .SetSvgAttribute("version", SvgVersion)
-      .SetSvgAttribute("xmlns", SvgNamespace);
-    return new XDocument(root);
-  }
-
-  public static XDocument SetSvgAttribute(this XDocument self, string key, object value)
-  {
-    self.Root.SetSvgAttribute(key, value);
-    return self;
-  }
-
-  public static XDocument SetSvgTextContent(this XDocument self, string text)
-  {
-    self.Root.SetSvgTextContent(text);
-    return self;
-  }
-
-  public static XElement NewSvgElement(this XDocument self, string childTag)
-  {
-    return self.Root.NewSvgElement(childTag);
-  }
-}
-
-public static class XSvgElement
-{
-  public static XElement Create(string tag)
-  {
-    return new XElement(XSvgDocument.SvgNamespace + tag);
-  }
-
-  public static XElement SetSvgAttribute(this XElement self, string key, object value)
-  {
-    self.SetAttributeValue(key, value);
-    return self;
-  }
-
-  public static XElement SetSvgTextContent(this XElement self, string text)
-  {
-    self.Value = text;
-    return self;
-  }
-
-  public static XElement NewSvgElement(this XElement self, string tag)
-  {
-    XElement child = Create(tag);
-    self.Add(child);
-    return child;
+    return (writer ?? new SceneSvgWriter()).WriteSvgDocument(self);
   }
 }
