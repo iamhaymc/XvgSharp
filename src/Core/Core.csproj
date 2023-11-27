@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../../.props/Common.props" />
+  <Import Project="../../.props/Library.props" />
+
+  <PropertyGroup>
+    <ProjectName>$(Product).Core</ProjectName>
+  </PropertyGroup>
+
+</Project>

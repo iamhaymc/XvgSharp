@@ -1,0 +1,9 @@
+{
+  "files.exclude": {
+    "**/.editorconfig": true,
+    "**/.vs": true,
+    "**/bin": true,
+    "**/LICENSE": true,
+    "**/obj": true,
+  }
+}

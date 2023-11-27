@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../../.props/Common.props" />
+  <Import Project="../../.props/Tests.props" />
+
+  <PropertyGroup>
+    <ProjectName>$(Product).Tests</ProjectName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\_Sdk\Sdk.csproj" />
+  </ItemGroup>
+
+</Project>
