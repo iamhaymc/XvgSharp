@@ -1,14 +1,13 @@
 ﻿using Xvg.Humanize.Localisation.DateToOrdinalWords;
 
-namespace Xvg.Humanize.Configuration
+namespace Xvg.Humanize.Configuration;
+
+internal class DateToOrdinalWordsConverterRegistry : LocaliserRegistry<IDateToOrdinalWordConverter>
 {
-    internal class DateToOrdinalWordsConverterRegistry : LocaliserRegistry<IDateToOrdinalWordConverter>
-    {
-        public DateToOrdinalWordsConverterRegistry() : base(new DefaultDateToOrdinalWordConverter())
-        {
-            Register("en-US", new UsDateToOrdinalWordsConverter());
-            Register("fr", new FrDateToOrdinalWordsConverter());
-            Register("es", new EsDateToOrdinalWordsConverter());
-        }
-    }
+  public DateToOrdinalWordsConverterRegistry() : base(new DefaultDateToOrdinalWordConverter())
+  {
+    Register("en-US", new UsDateToOrdinalWordsConverter());
+    Register("fr", new FrDateToOrdinalWordsConverter());
+    Register("es", new EsDateToOrdinalWordsConverter());
+  }
 }

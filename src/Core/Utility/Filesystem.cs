@@ -341,11 +341,11 @@ public static class FsDir
 
   public static IEnumerable<FileSystemInfo> FindItems(string path, string namePattern = "*")
     => Directory.GetFileSystemEntries(path, namePattern, SearchOption.TopDirectoryOnly)
-    .Select(x => File.Exists(x) ? (FileSystemInfo)new DirectoryInfo(x) : new FileInfo(x));
+      .Select(x => File.Exists(x) ? (FileSystemInfo)new DirectoryInfo(x) : new FileInfo(x));
 
   public static IEnumerable<FileSystemInfo> FindAllItems(string path, string namePattern = "*")
     => Directory.GetFileSystemEntries(path, namePattern, SearchOption.AllDirectories)
-    .Select(x => File.Exists(x) ? (FileSystemInfo)new DirectoryInfo(x) : new FileInfo(x));
+      .Select(x => File.Exists(x) ? (FileSystemInfo)new DirectoryInfo(x) : new FileInfo(x));
 }
 
 public static class FileSystemInfoExtensions
@@ -415,84 +415,50 @@ public static class FileInfoExtensions
   }
 }
 
-  public interface IFileRepo
+public interface IFileRepo
+{
+  Task<bool> Test(string path);
+  Task Delete(string path);
+  Task<Stream> StreamIn(string path);
+  Task StreamOut(string path, Stream data);
+  Task<string> TextIn(string path);
+  Task TextOut(string path, string data);
+}
+
+public class LocalFileRepo : IFileRepo
+{
+  public Task<bool> Test(string path)
   {
-    Task<bool> Test(string path);
-    Task Delete(string path);
-    Task<Stream> StreamIn(string path);
-    Task StreamOut(string path, Stream data);
-    Task<string> TextIn(string path);
-    Task TextOut(string path, string data);
-    //Task<bool> ZipEntryIn(string zipPath, string entryName, Stream entryData);
-    //Task ZipEntryOut(string zipPath, string entryName, string entryPath);
-    //Task ZipEntryOut(string zipPath, IEnumerable<KeyValuePair<string, string>> entryPathMap);
-    //Task ZipEntryOut(string zipPath, string entryName, Stream entryData);
-    //Task ZipEntryOut(string zipPath, IEnumerable<KeyValuePair<string, Stream>> entryDataMap);
+    return Task.FromResult(FsFile.Test(path));
   }
 
-  public class LocalFileRepo : IFileRepo
+  public Task Delete(string path)
   {
-    public Task<bool> Test(string path)
-    {
-      return Task.FromResult(FsFile.Test(path));
-    }
-
-    public Task Delete(string path)
-    {
-      FsFile.Delete(path);
-      return Task.CompletedTask;
-    }
-
-    public Task<Stream> StreamIn(string path)
-    {
-      return Task.FromResult((Stream)FsFile.StreamIn(path));
-    }
-
-    public Task StreamOut(string path, Stream data)
-    {
-      using (var ostream = FsFile.StreamOut(path))
-        data.CopyTo(ostream);
-      return Task.CompletedTask;
-    }
-
-    public async Task<string> TextIn(string path)
-    {
-      using (var fstream = new StreamReader(await StreamIn(path)))
-        return fstream.ReadToEnd();
-    }
-
-    public Task TextOut(string path, string data)
-    {
-      using (var buffer = new MemoryStream(Encoding.UTF8.GetBytes(data)))
-        return StreamOut(path, buffer);
-    }
-
-    //public Task<bool> ZipEntryIn(string zipPath, string entryName, Stream entryData)
-    //{
-    //  return Task.FromResult(FsZip.EntryIn(zipPath, entryName, entryData));
-    //}
-
-    //public Task ZipEntryOut(string zipPath, string entryName, string entryPath)
-    //{
-    //  FsZip.EntryOut(zipPath, entryName, entryPath);
-    //  return Task.CompletedTask;
-    //}
-
-    //public Task ZipEntryOut(string zipPath, IEnumerable<KeyValuePair<string, string>> entryPathMap)
-    //{
-    //  FsZip.EntryOut(zipPath, entryPathMap);
-    //  return Task.CompletedTask;
-    //}
-
-    //public Task ZipEntryOut(string zipPath, string entryName, Stream entryData)
-    //{
-    //  FsZip.EntryOut(zipPath, entryName, entryData);
-    //  return Task.CompletedTask;
-    //}
-
-    //public Task ZipEntryOut(string zipPath, IEnumerable<KeyValuePair<string, Stream>> entryDataMap)
-    //{
-    //  FsZip.EntryOut(zipPath, entryDataMap);
-    //  return Task.CompletedTask;
-    //}
+    FsFile.Delete(path);
+    return Task.CompletedTask;
   }
+
+  public Task<Stream> StreamIn(string path)
+  {
+    return Task.FromResult((Stream)FsFile.StreamIn(path));
+  }
+
+  public Task StreamOut(string path, Stream data)
+  {
+    using (var ostream = FsFile.StreamOut(path))
+      data.CopyTo(ostream);
+    return Task.CompletedTask;
+  }
+
+  public async Task<string> TextIn(string path)
+  {
+    using (var fstream = new StreamReader(await StreamIn(path)))
+      return fstream.ReadToEnd();
+  }
+
+  public Task TextOut(string path, string data)
+  {
+    using (var buffer = new MemoryStream(Encoding.UTF8.GetBytes(data)))
+      return StreamOut(path, buffer);
+  }
+}

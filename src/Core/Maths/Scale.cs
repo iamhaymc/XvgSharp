@@ -7,7 +7,7 @@ public interface IScale<D, R>
 public static class Scale
 {
   public static ContinuousScale ToIdentity(double dMin, double dMax)
-   => new ContinuousScale(new[] { dMin, dMax }, new[] { dMin, dMax },
+    => new ContinuousScale(new[] { dMin, dMax }, new[] { dMin, dMax },
   transformer: new ScaleIdentityTransformer());
 
   public static ContinuousScale ToIdentity(Range d, Range r)

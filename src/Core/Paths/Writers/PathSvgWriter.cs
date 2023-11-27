@@ -40,22 +40,22 @@ public class VgPathSvgWriter : VgTextWriter
   }
 
   private void AppendMoveTo(VgMoveToStep step)
-      => Add($"{(step.IsRelative ? 'm' : 'M')} {step.Point.X} {step.Point.Y}");
+      => Add($"{(step.Relative ? 'm' : 'M')} {step.Point.X} {step.Point.Y}");
 
   private void AppendLineTo(VgLineToStep step)
-      => Add($"{(step.IsRelative ? 'l' : 'L')} {step.Point.X} {step.Point.Y}");
+      => Add($"{(step.Relative ? 'l' : 'L')} {step.Point.X} {step.Point.Y}");
 
   private void AppendBezier2To(VgBezier2ToStep step)
-      => Add($"{(step.IsRelative ? 'q' : 'Q')} {step.Point0.X} {step.Point0.Y}, {step.Point1.X} {step.Point1.Y}");
+      => Add($"{(step.Relative ? 'q' : 'Q')} {step.Point0.X} {step.Point0.Y}, {step.Point1.X} {step.Point1.Y}");
 
   private void AppendBezier3To(VgBezier3ToStep step)
-      => Add($"{(step.IsRelative ? 'c' : 'C')} {step.Point0.X} {step.Point0.Y}, {step.Point1.X} {step.Point1.Y}, {step.Point2.X} {step.Point2.Y}");
+      => Add($"{(step.Relative ? 'c' : 'C')} {step.Point0.X} {step.Point0.Y}, {step.Point1.X} {step.Point1.Y}, {step.Point2.X} {step.Point2.Y}");
 
   private void AppendArcTo(VgArcToStep step)
   {
     int ilarge = step.Large ? 1 : 0;
     int isweep = step.Sweep ? 1 : 0;
-    Add($"{(step.IsRelative ? 'a' : 'A')} {step.Radius.X} {step.Radius.Y} {step.Rotation} {ilarge} {isweep} {step.Point.X} {step.Point.Y}");
+    Add($"{(step.Relative ? 'a' : 'A')} {step.Radius.X} {step.Radius.Y} {step.Rotation} {ilarge} {isweep} {step.Point.X} {step.Point.Y}");
   }
 
   private void AppendClose(VgCloseStep step) => Add("z");

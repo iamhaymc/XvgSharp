@@ -3,21 +3,20 @@
 using System;
 using System.Globalization;
 
-namespace Xvg.Humanize.DateTimeHumanizeStrategy
+namespace Xvg.Humanize.DateTimeHumanizeStrategy;
+
+/// <summary>
+/// The default 'distance of time' -> words calculator.
+/// </summary>
+public class DefaultTimeOnlyHumanizeStrategy : ITimeOnlyHumanizeStrategy
 {
-    /// <summary>
-    /// The default 'distance of time' -> words calculator.
-    /// </summary>
-    public class DefaultTimeOnlyHumanizeStrategy : ITimeOnlyHumanizeStrategy
-    {
-        /// <summary>
-        /// Calculates the distance of time in words between two provided times
-        /// </summary>
-        public string Humanize(TimeOnly input, TimeOnly comparisonBase, CultureInfo culture)
-        {
-            return DateTimeHumanizeAlgorithms.DefaultHumanize(input, comparisonBase, culture);
-        }
-    }
+  /// <summary>
+  /// Calculates the distance of time in words between two provided times
+  /// </summary>
+  public string Humanize(TimeOnly input, TimeOnly comparisonBase, CultureInfo culture)
+  {
+    return DateTimeHumanizeAlgorithms.DefaultHumanize(input, comparisonBase, culture);
+  }
 }
 
 #endif

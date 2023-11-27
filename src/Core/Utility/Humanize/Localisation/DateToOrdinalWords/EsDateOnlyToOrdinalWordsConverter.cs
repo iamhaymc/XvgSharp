@@ -4,16 +4,15 @@ using System;
 
 using Xvg.Humanize.Configuration;
 
-namespace Xvg.Humanize.Localisation.DateToOrdinalWords
+namespace Xvg.Humanize.Localisation.DateToOrdinalWords;
+
+internal class EsDateOnlyToOrdinalWordsConverter : DefaultDateOnlyToOrdinalWordConverter
 {
-    internal class EsDateOnlyToOrdinalWordsConverter : DefaultDateOnlyToOrdinalWordConverter
-    {
-        public override string Convert(DateOnly date)
-        {
-            var equivalentDateTime = date.ToDateTime(TimeOnly.MinValue);
-            return Configurator.DateToOrdinalWordsConverter.Convert(equivalentDateTime);
-        }
-    }
+  public override string Convert(DateOnly date)
+  {
+    var equivalentDateTime = date.ToDateTime(TimeOnly.MinValue);
+    return Configurator.DateToOrdinalWordsConverter.Convert(equivalentDateTime);
+  }
 }
 
 #endif

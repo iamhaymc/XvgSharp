@@ -1,21 +1,20 @@
-﻿namespace Xvg.Humanize
+﻿namespace Xvg.Humanize;
+
+/// <summary>
+/// Definite and Indefinite English Articles
+/// </summary>
+public enum EnglishArticles
 {
-    /// <summary>
-    /// Definite and Indefinite English Articles
-    /// </summary>
-    public enum EnglishArticles
-    {
-        /// <summary>
-        /// A
-        /// </summary>
-        A,
-        /// <summary>
-        /// An
-        /// </summary>
-        An,
-        /// <summary>
-        /// The
-        /// </summary>
-        The
-    }
+  /// <summary>
+  /// A
+  /// </summary>
+  A,
+  /// <summary>
+  /// An
+  /// </summary>
+  An,
+  /// <summary>
+  /// The
+  /// </summary>
+  The
 }

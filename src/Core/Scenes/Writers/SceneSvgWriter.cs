@@ -260,7 +260,7 @@ public class SceneSvgWriter
     return string.IsNullOrEmpty(value) ? null : value;
   }
 
-  private string SerializeAspectRatio(AspectType? type)
+  private string SerializeAspectRatio(BoxFitType? type)
     => type?.ToStyle() ?? AspectStyle.XMidYMidMeet;
 
   private string SerializeShapeRendering(bool antialias)

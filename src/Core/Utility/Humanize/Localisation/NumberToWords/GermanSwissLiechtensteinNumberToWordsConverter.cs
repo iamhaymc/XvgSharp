@@ -1,15 +1,14 @@
-﻿namespace Xvg.Humanize.Localisation.NumberToWords
-{
-    internal class GermanSwissLiechtensteinNumberToWordsConverter : GermanNumberToWordsConverterBase
-    {
-        protected override string GetTens(long tens)
-        {
-            if (tens == 3)
-            {
-                return "dreissig";
-            }
+﻿namespace Xvg.Humanize.Localisation.NumberToWords;
 
-            return base.GetTens(tens);
-        }
+internal class GermanSwissLiechtensteinNumberToWordsConverter : GermanNumberToWordsConverterBase
+{
+  protected override string GetTens(long tens)
+  {
+    if (tens == 3)
+    {
+      return "dreissig";
     }
+
+    return base.GetTens(tens);
+  }
 }

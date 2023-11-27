@@ -1,6 +1,6 @@
 ﻿namespace Xvg;
 
-public class CopyNode : SceneNode, 
+public class CopyNode : SceneNode,
   ITransformableNode<CopyNode>
 {
   public override SceneNodeType Type => SceneNodeType.Copy;

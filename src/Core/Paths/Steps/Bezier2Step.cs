@@ -11,12 +11,12 @@ public class VgBezier2ToStep : VgBaseStep
   {
     Point0 = point0;
     Point1 = point1;
-    IsRelative = relative;
+    Relative = relative;
   }
 
   public override IVgPathStep Translate(Vector2 translation)
   {
-    if (!IsRelative)
+    if (!Relative)
     {
       Point0 += translation;
       Point1 += translation;

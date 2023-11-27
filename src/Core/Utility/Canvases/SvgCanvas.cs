@@ -1,6 +1,10 @@
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 
 namespace Xvg;
+
+public class SvgCanvas : CanvasBase
+{
+}
 
 public static class XSvgDocument
 {

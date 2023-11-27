@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Xvg;
+﻿namespace Xvg;
 
 public interface IRng
 {
@@ -30,7 +28,7 @@ public abstract class RngBase : IRng
   /// <inheritdoc/>
   public virtual int NextInt(int max = int.MaxValue)
   {
-    return (int)(Next() * 2.0 - 1.0 * max);
+    return (int)(Next() * 2.0 - 1.0) * max;
   }
 
   /// <inheritdoc/>

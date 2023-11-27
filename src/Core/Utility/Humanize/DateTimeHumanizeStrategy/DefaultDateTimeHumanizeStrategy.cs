@@ -1,19 +1,18 @@
-using System;
+﻿using System;
 using System.Globalization;
 
-namespace Xvg.Humanize.DateTimeHumanizeStrategy
+namespace Xvg.Humanize.DateTimeHumanizeStrategy;
+
+/// <summary>
+/// The default 'distance of time' -> words calculator.
+/// </summary>
+public class DefaultDateTimeHumanizeStrategy : IDateTimeHumanizeStrategy
 {
-    /// <summary>
-    /// The default 'distance of time' -> words calculator.
-    /// </summary>
-    public class DefaultDateTimeHumanizeStrategy : IDateTimeHumanizeStrategy
-    {
-        /// <summary>
-        /// Calculates the distance of time in words between two provided dates
-        /// </summary>
-        public string Humanize(DateTime input, DateTime comparisonBase, CultureInfo culture)
-        {
-            return DateTimeHumanizeAlgorithms.DefaultHumanize(input, comparisonBase, culture);
-        }
-    }
+  /// <summary>
+  /// Calculates the distance of time in words between two provided dates
+  /// </summary>
+  public string Humanize(DateTime input, DateTime comparisonBase, CultureInfo culture)
+  {
+    return DateTimeHumanizeAlgorithms.DefaultHumanize(input, comparisonBase, culture);
+  }
 }

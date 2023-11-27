@@ -1,4 +1,5 @@
 ﻿namespace Xvg;
+
 public struct Box
 {
   public Vector2 Min { get; set; }
@@ -63,72 +64,75 @@ public struct Box
     return !(box.Max.X < Min.X || box.Min.X > Max.X
           || box.Max.Y < Min.Y || box.Min.Y > Max.Y);
   }
-
   public Box Intersect(Box box)
-  {
-    return new Box(Vector2.Max(Min, box.Min), Vector2.Min(Max, box.Max));
-  }
-  public Box Union(Box box)
-  {
-    return new Box(Vector2.Min(Min, box.Min), Vector2.Max(Max, box.Max));
-  }
+  => new Box(Vector2.Max(Min, box.Min), Vector2.Min(Max, box.Max));
 
-  public static Box Zero
-    => new Box(Vector2.Zero, Vector2.Zero);
+  public Box Union(Box box)
+    => new Box(Vector2.Min(Min, box.Min), Vector2.Max(Max, box.Max));
 
   public static Box From(Vector2 position, Vector2 size)
     => new Box(position, position + size);
+
   public static Box From(float x, float y, float w, float h)
     => From(new Vector2(x, y), new Vector2(w, h));
 
   public static Box FromPosition(Vector2 position)
     => From(position, Vector2.Zero);
+
   public static Box FromPosition(float x, float y)
     => From(x, y, 0, 0);
 
   public static Box FromSize(Vector2 size)
     => From(Vector2.Zero, size);
+
   public static Box FromSize(float w, float h)
     => From(0, 0, w, h);
 
   /// <summary>
-  /// Creates a view box that fits in a frame while considering the aspect ratio
+  /// Creates a box from an inner box that fits an outer box while preserving aspect ratio
   /// </summary>
-  public static Box FromFit(Box view, Box frame, AspectType? aspect = null)
+  public Box Fit(Box frame, BoxFitType method)
   {
-    switch (aspect)
+    switch (method)
     {
       default:
-      case AspectType.XMidYMidMeet:
-        return FromFitMeet(view, frame);
-      case AspectType.XMidYMidSlice:
-        return FromFitMeet(view, frame);
-      case AspectType.None:
-        return From(frame.Min, frame.Size);
+      case BoxFitType.XMidYMidMeet:
+        return FitMeet(this, frame);
+      case BoxFitType.XMidYMidSlice:
+        return FitSlice(this, frame);
     }
   }
 
   /// <summary>
-  /// Creates a view box that fits in a frame while considering the aspect ratio
+  /// Creates a box from an inner box that fits inside an outer box while preserving aspect ratio
   /// </summary>
-  public static Box FromFitMeet(Box view, Box frame)
+  public static Box FitMeet(Box inner, Box outer)
   {
-    float scale = Math.Min(frame.Width / view.Width, frame.Height / view.Height);
-    Vector2 position = (frame.Min) + (view.Min * scale)
-             + (frame.HalfSize) - (view.HalfSize * scale);
-    Vector2 size = view.Size * scale;
+    float scale = Math.Min(outer.Width / inner.Width, outer.Height / inner.Height);
+    Vector2 position = outer.Min + (inner.Min * scale)
+                     + outer.HalfSize - (inner.HalfSize * scale);
+    Vector2 size = inner.Size * scale;
     return From(position, size);
   }
 
   /// <summary>
-  /// Creates a view box that fits in a frame while considering the aspect ratio
+  /// Creates a box from an inner box that fills an outer box while preserving aspect ratio
   /// </summary>
-  public static Box FromFitSlice(Box view, Box frame)
+  public static Box FitSlice(Box view, Box frame)
   {
     float scale = Math.Max(frame.Width / view.Width, frame.Height / view.Height);
-    Vector2 position = (frame.Min) + (view.Min * scale)
-             + (frame.HalfSize) - (view.HalfSize * scale);
+    Vector2 position = frame.Min + (view.Min * scale)
+                     + frame.HalfSize - (view.HalfSize * scale);
     Vector2 size = view.Size * scale;
     return From(position, size);
   }
+
+  public static readonly Box Zero = new Box(Vector2.Zero, Vector2.Zero);
+}
+
+public enum BoxFitType
+{
+  XMidYMidMeet,
+  XMidYMidSlice,
+  None
 }

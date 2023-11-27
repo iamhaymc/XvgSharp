@@ -11,7 +11,7 @@ public static class Radial
 
   public static double ToRadians(double degrees)
   {
-    return (Math.PI / 180.0) * degrees;
+    return Math.PI / 180.0 * degrees;
   }
   public static float ToRadians(float degrees)
   {
@@ -20,7 +20,7 @@ public static class Radial
 
   public static double ToDegrees(double radians)
   {
-    return (180.0 / Math.PI) * radians;
+    return 180.0 / Math.PI * radians;
   }
   public static float ToDegrees(float radians)
   {

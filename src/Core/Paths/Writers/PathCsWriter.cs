@@ -53,13 +53,13 @@ public class VgPathCsWriter : VgTextWriter
     => Add(FormatInvocation("MoveTo",
         FormatFloat(step.Point.X, _preScaleXTerm ?? _preScaleYTerm, _translateXTerm, _postScaleXTerm ?? _postScaleYTerm),
         FormatFloat(step.Point.Y, _preScaleXTerm ?? _preScaleYTerm, _translateYTerm, _postScaleXTerm ?? _postScaleYTerm),
-        FormatBoolean(step.IsRelative)));
+        FormatBoolean(step.Relative)));
 
   private void AppendLineTo(VgLineToStep step)
     => Add(FormatInvocation("LineTo",
         FormatFloat(step.Point.X, _preScaleXTerm ?? _preScaleYTerm, _translateXTerm, _postScaleXTerm ?? _postScaleYTerm),
         FormatFloat(step.Point.Y, _preScaleXTerm ?? _preScaleYTerm, _translateYTerm, _postScaleXTerm ?? _postScaleYTerm),
-        FormatBoolean(step.IsRelative)));
+        FormatBoolean(step.Relative)));
 
   private void AppendBezier2To(VgBezier2ToStep step)
     => Add(FormatInvocation("Bezier2To",
@@ -67,7 +67,7 @@ public class VgPathCsWriter : VgTextWriter
         FormatFloat(step.Point0.Y, _preScaleXTerm ?? _preScaleYTerm, _translateYTerm, _postScaleXTerm ?? _postScaleYTerm),
         FormatFloat(step.Point1.X, _preScaleXTerm ?? _preScaleYTerm, _translateXTerm, _postScaleXTerm ?? _postScaleYTerm),
         FormatFloat(step.Point1.Y, _preScaleXTerm ?? _preScaleYTerm, _translateYTerm, _postScaleXTerm ?? _postScaleYTerm),
-        FormatBoolean(step.IsRelative)));
+        FormatBoolean(step.Relative)));
 
   private void AppendBezier3To(VgBezier3ToStep step)
     => Add(FormatInvocation("Bezier3To",
@@ -77,7 +77,7 @@ public class VgPathCsWriter : VgTextWriter
         FormatFloat(step.Point1.Y, _preScaleXTerm ?? _preScaleYTerm, _translateYTerm, _postScaleXTerm ?? _postScaleYTerm),
         FormatFloat(step.Point2.X, _preScaleXTerm ?? _preScaleYTerm, _translateXTerm, _postScaleXTerm ?? _postScaleYTerm),
         FormatFloat(step.Point2.Y, _preScaleXTerm ?? _preScaleYTerm, _translateYTerm, _postScaleXTerm ?? _postScaleYTerm),
-        FormatBoolean(step.IsRelative)));
+        FormatBoolean(step.Relative)));
 
   private void AppendArcTo(VgArcToStep step)
     => Add(FormatInvocation("ArcTo",
@@ -87,7 +87,7 @@ public class VgPathCsWriter : VgTextWriter
         FormatFloat(step.Radius.Y, _preScaleYTerm, null, _postScaleYTerm),
         FormatFloat(step.Rotation),
         FormatBoolean(step.Large), FormatBoolean(step.Sweep),
-        FormatBoolean(step.IsRelative)));
+        FormatBoolean(step.Relative)));
 
   private void AppendClose(VgCloseStep step)
     => Add(FormatInvocation("Close"));

@@ -1,6 +1,6 @@
 ﻿namespace Xvg;
 
-public class GroupNode : SceneNode, 
+public class GroupNode : SceneNode,
   IAliasableNode<GroupNode>, IFilterableNode<GroupNode>
 {
   public override SceneNodeType Type => SceneNodeType.Group;

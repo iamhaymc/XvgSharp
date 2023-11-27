@@ -13,7 +13,9 @@ public struct Range
   public double Length => Math.Abs(Max - Min);
 
   public double[] ToSteps(int count) => Step(Min, Max, count);
+
   public double[] ToSteps(double step) => Step(Min, Max, step);
+
   public double[] ToTicks(int count, bool fit = false) => Tick(Min, Max, count, fit);
 
   public static Range From(double min, double max)
@@ -51,6 +53,7 @@ public struct Range
         return parts.ToArray();
     }
   }
+
   public static double[] Step(double start, double stop, double step = 1f)
   {
     int n = (int)Math.Max(0, Math.Ceiling((stop - start) / step));
@@ -59,6 +62,7 @@ public struct Range
       values[i] = start + i * step;
     return values;
   }
+
   public static double[] Step(Range range, double step = 1f)
     => Step(range.Min, range.Max, step);
 
@@ -113,12 +117,13 @@ public struct Range
     if (reverse) ticks.Reverse();
     return ticks;
   }
+
   public static double[] Tick(Range range, int count, bool fit = false)
   {
     return Tick(range.Min, range.Max, count, fit);
   }
 
-  static Range TickFit(double start, double stop, int count)
+  private static Range TickFit(double start, double stop, int count)
   {
     double prestep = 0;
     while (true)
@@ -140,7 +145,8 @@ public struct Range
     }
     return new Range(start, stop);
   }
-  static double TickIncr(double start, double stop, int count)
+
+  private static double TickIncr(double start, double stop, int count)
   {
     double step = (stop - start) / Math.Max(0, count);
     double power = Math.Floor(Math.Log(step) / Real.LN10);
@@ -154,7 +160,8 @@ public struct Range
       ? 5 : error >= Real.E2
       ? 2 : 1);
   }
-  static double TickStep(double start, double stop, int count)
+
+  private static double TickStep(double start, double stop, int count)
   {
     double step0 = Math.Abs(stop - start) / Math.Max(0, count);
     double step1 = Math.Pow(10, Math.Floor(Math.Log(step0) / Real.LN10));

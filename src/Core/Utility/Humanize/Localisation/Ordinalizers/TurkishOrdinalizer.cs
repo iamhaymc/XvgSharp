@@ -1,10 +1,9 @@
-﻿namespace Xvg.Humanize.Localisation.Ordinalizers
+﻿namespace Xvg.Humanize.Localisation.Ordinalizers;
+
+internal class TurkishOrdinalizer : DefaultOrdinalizer
 {
-    internal class TurkishOrdinalizer : DefaultOrdinalizer
-    {
-        public override string Convert(int number, string numberString)
-        {
-            return numberString + ".";
-        }
-    }
+  public override string Convert(int number, string numberString)
+  {
+    return numberString + ".";
+  }
 }

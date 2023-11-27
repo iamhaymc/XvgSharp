@@ -1,6 +1,6 @@
 ﻿namespace Xvg;
 
-public class ImageNode : SceneNode, 
+public class ImageNode : SceneNode,
   IAliasableNode<ImageNode>, IFrameableNode<ImageNode>, IFilterableNode<ImageNode>
 {
   public override SceneNodeType Type => SceneNodeType.Image;
@@ -11,7 +11,7 @@ public class ImageNode : SceneNode,
   public bool Abstract { get; set; } = false;
   public string Url { get; set; }
   public Box Frame { get; set; } = Box.Zero;
-  public AspectType Aspect { get; set; } = AspectStyle.Default;
+  public BoxFitType Aspect { get; set; } = AspectStyle.Default;
   public Transform Transform { get; set; } = Transform.Identity;
   public string FilterId { get; set; } = null;
 
@@ -41,7 +41,7 @@ public class ImageNode : SceneNode,
   public ImageNode UseFrame(Vector2 size)
     => UseFrame(Box.FromSize(size));
 
-  public ImageNode UseAspect(AspectType aspect)
+  public ImageNode UseAspect(BoxFitType aspect)
   {
     Aspect = aspect;
     return this;

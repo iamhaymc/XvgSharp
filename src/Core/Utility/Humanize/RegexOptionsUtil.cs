@@ -1,15 +1,14 @@
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
 
-namespace Xvg.Humanize
-{
-    internal static class RegexOptionsUtil
-    {
-        static RegexOptionsUtil()
-        {
-            Compiled = Enum.TryParse("Compiled", out RegexOptions compiled) ? compiled : RegexOptions.None;
-        }
+namespace Xvg.Humanize;
 
-        public static RegexOptions Compiled { get; }
-    }
+internal static class RegexOptionsUtil
+{
+  static RegexOptionsUtil()
+  {
+    Compiled = Enum.TryParse("Compiled", out RegexOptions compiled) ? compiled : RegexOptions.None;
+  }
+
+  public static RegexOptions Compiled { get; }
 }

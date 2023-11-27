@@ -17,3 +17,11 @@
 | `XvgSharp.Core`  | [![NuGet](https://img.shields.io/nuget/v/XvgSharp.Core.svg)](https://www.nuget.org/packages/XvgSharp.Core/) |
 | `XvgSharp.Data`  | [![NuGet](https://img.shields.io/nuget/v/XvgSharp.Data.svg)](https://www.nuget.org/packages/XvgSharp.Data/) |
 | `XvgSharp.Extra` | [![NuGet](https://img.shields.io/nuget/v/XvgSharp.Extra.svg)](https://www.nuget.org/packages/XvgSharp.Extra/) |
+
+## Install
+
+Install CI tooling
+```
+dotnet tool install --global dotnet-format
+dotnet tool install --global dotnet-version-cli
+```

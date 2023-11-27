@@ -1,10 +1,9 @@
-﻿namespace Xvg.Humanize.Localisation.Ordinalizers
+﻿namespace Xvg.Humanize.Localisation.Ordinalizers;
+
+internal class IcelandicOrdinalizer : DefaultOrdinalizer
 {
-    internal class IcelandicOrdinalizer : DefaultOrdinalizer
-    {
-        public override string Convert(int number, string numberString)
-        {
-            return numberString + ".";
-        }
-    }
+  public override string Convert(int number, string numberString)
+  {
+    return numberString + ".";
+  }
 }

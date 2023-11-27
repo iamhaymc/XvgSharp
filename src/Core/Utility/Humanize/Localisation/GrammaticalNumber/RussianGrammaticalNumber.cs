@@ -1,9 +1,8 @@
-﻿namespace Xvg.Humanize.Localisation.GrammaticalNumber
+﻿namespace Xvg.Humanize.Localisation.GrammaticalNumber;
+
+internal enum RussianGrammaticalNumber
 {
-    internal enum RussianGrammaticalNumber
-    {
-        Singular,
-        Paucal,
-        Plural
-    }
+  Singular,
+  Paucal,
+  Plural
 }

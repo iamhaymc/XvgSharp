@@ -1,4 +1,4 @@
-public static class InlineFont
+﻿public static class InlineFont
 {
   #region [Data URLs]
 

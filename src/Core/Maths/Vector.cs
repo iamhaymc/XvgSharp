@@ -21,54 +21,75 @@ public struct Vector2 : IComparable<Vector2>
 
   public bool Eq(Vector2 v)
     => X == v.X && Y == v.Y;
+
   public bool Lt(Vector2 v)
     => CompareTo(v) < 0;
+
   public bool LtEq(Vector2 v)
     => CompareTo(v) < 1;
+
   public bool Gt(Vector2 v)
     => CompareTo(v) > 0;
+
   public bool GtEq(Vector2 v)
     => CompareTo(v) > -1;
 
   public Vector2 Add(float s)
     => new Vector2(X + s, Y + s);
+
   public Vector2 Add(Vector2 v)
     => new Vector2(X + v.X, Y + v.Y);
+
   public Vector2 Sub(float s)
     => new Vector2(X - s, Y - s);
+
   public Vector2 Sub(Vector2 v)
     => new Vector2(X - v.X, Y - v.Y);
+
   public Vector2 Mul(float s)
     => new Vector2(X * s, Y * s);
+
   public Vector2 Mul(Vector2 v)
     => new Vector2(X * v.X, Y * v.Y);
+
   public Vector2 Div(float s)
     => new Vector2(X / s, Y / s);
+
   public Vector2 Div(Vector2 v)
     => new Vector2(X / v.X, Y / v.Y);
+
   public Vector2 Pow(float e)
     => new Vector2((float)Math.Pow(X, e), (float)Math.Pow(Y, e));
+
   public Vector2 Min(Vector2 v)
     => new Vector2(Math.Min(X, v.X), Math.Min(Y, v.Y));
+
   public Vector2 Max(Vector2 v)
     => new Vector2(Math.Max(X, v.X), Math.Max(Y, v.Y));
 
   public Vector2 Neg()
     => new Vector2(-X, -Y);
+
   public Vector2 Exp()
     => new Vector2((float)Math.Exp(X), (float)Math.Exp(Y));
+
   public Vector2 Log()
     => new Vector2((float)Math.Log(X), (float)Math.Log(Y));
+
   public Vector2 Floor()
     => new Vector2((float)Math.Floor(X), (float)Math.Floor(Y));
+
   public Vector2 Ceil()
     => new Vector2((float)Math.Ceiling(X), (float)Math.Ceiling(Y));
+
   public Vector2 Round(int decimals = 0)
     => new Vector2((float)Math.Round(X, decimals), (float)Math.Round(Y, decimals));
+
   public Vector2 Clamp(float min, float max)
     => new Vector2(
       Math.Max(min, Math.Min(max, X)),
       Math.Max(min, Math.Min(max, Y)));
+
   public Vector2 Clamp(Vector2 min, Vector2 max)
     => new Vector2(
       Math.Max(min.X, Math.Min(max.X, X)),
@@ -85,6 +106,7 @@ public struct Vector2 : IComparable<Vector2>
 
   public Vector2 Resize(float length)
     => Normalize().Mul(length);
+
   public Vector2 Resize(float minLength, float maxLength)
   {
     float length = ToLength();
@@ -97,16 +119,19 @@ public struct Vector2 : IComparable<Vector2>
     float dx = X - v.X, dy = Y - v.Y;
     return (float)Math.Sqrt(dx * dx + dy * dy);
   }
+
   public float ToManhattan(Vector2 v)
     => Math.Abs(X - v.X) - Math.Abs(Y - v.Y);
 
   public float Dot(Vector2 v)
     => X * v.X + Y * v.Y;
+
   public float Cross(Vector2 v)
     => X * v.Y - Y * v.X;
 
   public float ToAngle() // w.r.t x-axis
     => (float)Math.Atan2(-Y, -X) + (float)Math.PI;
+
   public Vector2 Rotate(Vector2 center, float angle)
   {
     float c = (float)Math.Cos(angle);
@@ -117,6 +142,7 @@ public struct Vector2 : IComparable<Vector2>
       x * c - y * s + center.X,
       x * s + y * c + center.Y);
   }
+
   public Vector2 ToOrthogonal()
      => new Vector2(-Y, X);
 

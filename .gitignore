@@ -2,3 +2,5 @@
 **/.vs
 **/bin
 **/obj
+**/out
+**/__pycache__

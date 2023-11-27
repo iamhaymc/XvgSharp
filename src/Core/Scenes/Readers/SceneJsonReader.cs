@@ -1,4 +1,4 @@
-namespace Xvg;
+﻿namespace Xvg;
 
 public class SceneJsonReader
 {
@@ -6,7 +6,7 @@ public class SceneJsonReader
   {
     return FsFile.JsonIn<Scene>(path);
   }
-  
+
   public Scene ReadJsonString(string json)
   {
     return Json.FromJson<Scene>(json);

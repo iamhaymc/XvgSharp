@@ -2,7 +2,7 @@
 
 public enum SceneNodeType
 {
-  Filter, View, Group, Path, Text, Image, Copy, 
+  Filter, View, Group, Path, Text, Image, Copy,
 }
 
 public interface ISceneNode

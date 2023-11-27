@@ -2,22 +2,21 @@
 
 using System;
 
-namespace Xvg.Humanize.Localisation.DateToOrdinalWords
+namespace Xvg.Humanize.Localisation.DateToOrdinalWords;
+
+internal class DefaultDateOnlyToOrdinalWordConverter : IDateOnlyToOrdinalWordConverter
 {
-    internal class DefaultDateOnlyToOrdinalWordConverter : IDateOnlyToOrdinalWordConverter
-    {
 
-        public virtual string Convert(DateOnly date)
-        {
-            return date.Day.Ordinalize() + date.ToString(" MMMM yyyy");
-        }
+  public virtual string Convert(DateOnly date)
+  {
+    return date.Day.Ordinalize() + date.ToString(" MMMM yyyy");
+  }
 
-        public virtual string Convert(DateOnly date, GrammaticalCase grammaticalCase)
-        {
-            return Convert(date);
-        }
+  public virtual string Convert(DateOnly date, GrammaticalCase grammaticalCase)
+  {
+    return Convert(date);
+  }
 
-    }
 }
 
 #endif

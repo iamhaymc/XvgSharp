@@ -1,19 +1,18 @@
 ﻿using System;
 
-namespace Xvg.Humanize.Localisation.DateToOrdinalWords
+namespace Xvg.Humanize.Localisation.DateToOrdinalWords;
+
+internal class DefaultDateToOrdinalWordConverter : IDateToOrdinalWordConverter
 {
-    internal class DefaultDateToOrdinalWordConverter : IDateToOrdinalWordConverter
-    {
 
-        public virtual string Convert(DateTime date)
-        {
-            return date.Day.Ordinalize() + date.ToString(" MMMM yyyy");
-        }
+  public virtual string Convert(DateTime date)
+  {
+    return date.Day.Ordinalize() + date.ToString(" MMMM yyyy");
+  }
 
-        public virtual string Convert(DateTime date, GrammaticalCase grammaticalCase)
-        {
-            return Convert(date);
-        }
+  public virtual string Convert(DateTime date, GrammaticalCase grammaticalCase)
+  {
+    return Convert(date);
+  }
 
-    }
 }

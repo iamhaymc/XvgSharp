@@ -1,6 +1,6 @@
 ﻿namespace Xvg;
 
-public class PathNode : SceneNode, 
+public class PathNode : SceneNode,
   IAliasableNode<PathNode>, IFillableNode<PathNode>, IStrokableNode<PathNode>, IFilterableNode<PathNode>
 {
   public override SceneNodeType Type => SceneNodeType.Path;

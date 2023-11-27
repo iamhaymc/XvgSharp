@@ -9,12 +9,12 @@ public class VgMoveToStep : VgBaseStep
   public VgMoveToStep(Vector2 point, bool relative = false)
   {
     Point = point;
-    IsRelative = relative;
+    Relative = relative;
   }
 
   public override IVgPathStep Translate(Vector2 translation)
   {
-    if (!IsRelative)
+    if (!Relative)
       Point += translation;
     return this;
   }

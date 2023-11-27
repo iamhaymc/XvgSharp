@@ -1,6 +1,5 @@
-﻿namespace Xvg.Humanize.Localisation.NumberToWords
+﻿namespace Xvg.Humanize.Localisation.NumberToWords;
+
+internal class FrenchSwissNumberToWordsConverter : FrenchNumberToWordsConverterBase
 {
-    internal class FrenchSwissNumberToWordsConverter : FrenchNumberToWordsConverterBase
-    {
-    }
 }

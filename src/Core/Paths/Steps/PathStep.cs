@@ -8,7 +8,7 @@ public enum VgPathStepType
 public interface IVgPathStep
 {
   VgPathStepType Type { get; }
-  bool IsRelative { get; }
+  bool Relative { get; }
   IVgPathStep Translate(Vector2 translation);
   IVgPathStep Scale(Vector2 scale);
   Vector2? ToPoint();
@@ -17,7 +17,7 @@ public interface IVgPathStep
 public abstract class VgBaseStep : IVgPathStep
 {
   public abstract VgPathStepType Type { get; }
-  public bool IsRelative { get; set; }
+  public bool Relative { get; set; }
   public abstract IVgPathStep Translate(Vector2 translation);
   public abstract IVgPathStep Scale(Vector2 scale);
   public abstract Vector2? ToPoint();

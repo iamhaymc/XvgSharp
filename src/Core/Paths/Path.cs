@@ -182,7 +182,7 @@ public static class VgPathExtensions
       if (!step.IsClose())
       {
         Vector2 point = step.ToPoint() ?? Vector2.Zero;
-        positionN = step.IsRelative ? positionN + point : point;
+        positionN = step.Relative ? positionN + point : point;
         if (step.IsMoveTo())
           position0 = positionN;
       }

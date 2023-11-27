@@ -1,6 +1,6 @@
 ﻿namespace Xvg;
 
-public class TextNode : SceneNode, 
+public class TextNode : SceneNode,
   IAliasableNode<TextNode>, IFillableNode<TextNode>, IFilterableNode<TextNode>
 {
   public override SceneNodeType Type => SceneNodeType.Text;

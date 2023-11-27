@@ -45,16 +45,12 @@ public struct Matrix3
     return c;
   }
 
-  public static Matrix3 operator *(Matrix3 a, Matrix3 b) => a.Mul(b);
-
   public Vector2 Mul(Vector2 b)
   {
     return new Vector2(
       E11 * b.X + E21 * b.Y + E31,
       E12 * b.X + E22 * b.Y + E32);
   }
-
-  public static Vector2 operator *(Matrix3 a, Vector2 b) => a.Mul(b);
 
   public Matrix3 Clone() => new Matrix3(
     E11, E12, E13,
@@ -64,6 +60,34 @@ public struct Matrix3
   public override string ToString()
     => $"{E11} {E12} {E13} {E21} {E22} {E23} {E31} {E32} {E33}";
 
+  public static Matrix3 operator *(Matrix3 a, Matrix3 b) => a.Mul(b);
+  public static Vector2 operator *(Matrix3 a, Vector2 b) => a.Mul(b);
+
+  public static Matrix3 OfTranslation(float x, float y)
+  {
+    return new Matrix3(
+      1, 0, x,
+      0, 1, y,
+      0, 0, 1);
+  }
+
+  public static Matrix3 OfRotation(float radians)
+  {
+    float c = MathF.Cos(radians);
+    float s = MathF.Sin(radians);
+    return new Matrix3(
+      c, -s, 0,
+      s, c, 0,
+      0, 0, 1);
+  }
+
+  public static Matrix3 OfScale(float x, float y)
+  {
+    return new Matrix3(
+      x, 0, 0,
+      0, y, 0,
+      0, 0, 1);
+  }
 
   public static readonly Matrix3 Zero = new Matrix3(
     0, 0, 0,
@@ -74,30 +98,4 @@ public struct Matrix3
     1, 0, 0,
     0, 1, 0,
     0, 0, 1);
-
-  public static Matrix3 ToTranslation(float x, float y)
-  {
-    return new Matrix3(
-      1, 0, x,
-      0, 1, y,
-      0, 0, 1);
-  }
-
-  public static Matrix3 ToRotation(float radians)
-  {
-    float c = MathF.Cos(radians);
-    float s = MathF.Sin(radians);
-    return new Matrix3(
-      c, -s, 0,
-      s, c, 0,
-      0, 0, 1);
-  }
-
-  public static Matrix3 ToScale(float x, float y)
-  {
-    return new Matrix3(
-      x, 0, 0,
-      0, y, 0,
-      0, 0, 1);
-  }
 }

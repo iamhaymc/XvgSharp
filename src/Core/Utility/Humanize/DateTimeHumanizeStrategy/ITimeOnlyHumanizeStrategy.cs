@@ -3,18 +3,17 @@
 using System;
 using System.Globalization;
 
-namespace Xvg.Humanize.DateTimeHumanizeStrategy
+namespace Xvg.Humanize.DateTimeHumanizeStrategy;
+
+/// <summary>
+/// Implement this interface to create a new strategy for TimeOnly.Humanize and hook it in the Configurator.TimeOnlyHumanizeStrategy
+/// </summary>
+public interface ITimeOnlyHumanizeStrategy
 {
-    /// <summary>
-    /// Implement this interface to create a new strategy for TimeOnly.Humanize and hook it in the Configurator.TimeOnlyHumanizeStrategy
-    /// </summary>
-    public interface ITimeOnlyHumanizeStrategy
-    {
-        /// <summary>
-        /// Calculates the distance of time in words between two provided dates used for TimeOnly.Humanize
-        /// </summary>
-        string Humanize(TimeOnly input, TimeOnly comparisonBase, CultureInfo culture);
-    }
+  /// <summary>
+  /// Calculates the distance of time in words between two provided dates used for TimeOnly.Humanize
+  /// </summary>
+  string Humanize(TimeOnly input, TimeOnly comparisonBase, CultureInfo culture);
 }
 
 #endif

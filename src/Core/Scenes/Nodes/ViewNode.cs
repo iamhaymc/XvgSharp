@@ -1,6 +1,6 @@
 ﻿namespace Xvg;
 
-public class ViewNode : SceneNode, 
+public class ViewNode : SceneNode,
   IAliasableNode<ViewNode>, IFrameableNode<ViewNode>, IFillableNode<ViewNode>, IFilterableNode<ViewNode>
 {
   public override SceneNodeType Type => SceneNodeType.View;
@@ -11,7 +11,7 @@ public class ViewNode : SceneNode,
   public bool AntiAlias { get; set; } = true;
   public Box Frame { get; set; } = Box.Zero;
   public Box ViewBox { get; set; } = Box.Zero;
-  public AspectType Aspect { get; set; } = AspectStyle.Default;
+  public BoxFitType Aspect { get; set; } = AspectStyle.Default;
   public Transform Transform { get; set; } = Transform.Identity;
   public ColorType FillColor { get; set; } = FillStyle.DefaultColor;
   public FillRuleType FillRule { get; set; } = FillStyle.DefaultRule;
@@ -56,7 +56,7 @@ public class ViewNode : SceneNode,
   public ViewNode UseBox(Vector2 size)
      => UseBox(Box.FromSize(size));
 
-  public ViewNode UseAspect(AspectType aspect)
+  public ViewNode UseAspect(BoxFitType aspect)
   {
     Aspect = aspect;
     return this;
