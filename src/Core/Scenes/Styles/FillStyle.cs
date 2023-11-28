@@ -7,18 +7,18 @@ public enum FillRuleType
 
 public static partial class FillStyle
 {
-  public const ColorType DefaultColor = ColorType.White;
+  public const ColorKind DefaultColor = ColorKind.White;
   public const FillRuleType DefaultRule = FillRuleType.NonZero;
 
-  public const string NonZero = "nonzero";
-  public const string EvenOdd = "evenodd";
+  public const string SvgNonZero = "nonzero";
+  public const string SvgEvenOdd = "evenodd";
 
-  public static string ToStyle(this FillRuleType self)
+  public static string ToSvgStyle(this FillRuleType self)
   {
     switch (self)
     {
-      case FillRuleType.NonZero: return NonZero;
-      case FillRuleType.EvenOdd: return EvenOdd;
+      case FillRuleType.NonZero: return SvgNonZero;
+      case FillRuleType.EvenOdd: return SvgEvenOdd;
       default: throw new NotSupportedException();
     }
   }

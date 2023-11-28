@@ -60,27 +60,28 @@ public interface ITransformableNode<TNode> : ISceneNode
 public interface IFrameableNode<TNode> : ISceneNode
 {
   Box Frame { get; set; }
-  public TNode UseFrame(Box frame);
-  public TNode UseFrame(Vector2 position, Vector2 size);
-  public TNode UseFrame(Vector2 size);
+  TNode UseFrame(Box frame);
+  TNode UseFrame(Vector2 position, Vector2 size);
+  TNode UseFrame(Vector2 size);
+  TNode UseFit(BoxFitType fit);
 }
 
 public interface IFillableNode<TNode> : ISceneNode
   where TNode : ISceneNode
 {
-  ColorType FillColor { get; set; }
+  ColorKind FillColor { get; set; }
   FillRuleType FillRule { get; set; }
-  TNode UseFill(ColorType color, FillRuleType rule);
+  TNode UseFill(ColorKind color, FillRuleType rule);
 }
 
 public interface IStrokableNode<TNode> : ISceneNode
   where TNode : ISceneNode
 {
-  ColorType StrokeColor { get; set; }
+  ColorKind StrokeColor { get; set; }
   StrokeJointType StrokeJoint { get; set; }
   StrokeCapType StrokeCap { get; set; }
   float StrokeWidth { get; set; }
-  TNode UseStroke(ColorType color, StrokeJointType join, StrokeCapType cap, float width);
+  TNode UseStroke(ColorKind color, StrokeJointType join, StrokeCapType cap, float width);
 }
 
 public interface IFilterableNode<TNode> : ISceneNode
@@ -88,4 +89,11 @@ public interface IFilterableNode<TNode> : ISceneNode
 {
   string FilterId { get; set; }
   TNode UseFilter(string id);
+}
+
+public interface IClippable<TNode> : ISceneNode
+  where TNode : ISceneNode
+{
+  string ClipPathId { get; set; }
+  TNode UseClipPath(string id);
 }

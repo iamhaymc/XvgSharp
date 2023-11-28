@@ -1,19 +1,20 @@
 ﻿namespace Xvg;
 
 public class ImageNode : SceneNode,
-  IAliasableNode<ImageNode>, IFrameableNode<ImageNode>, IFilterableNode<ImageNode>
+  IAliasableNode<ImageNode>, IFrameableNode<ImageNode>, IFilterableNode<ImageNode>, IClippable<ImageNode>
 {
   public override SceneNodeType Type => SceneNodeType.Image;
 
   #region [Properties]
 
-  public bool AntiAlias { get; set; } = true;
   public bool Abstract { get; set; } = false;
+  public bool AntiAlias { get; set; } = true;
   public string Url { get; set; }
   public Box Frame { get; set; } = Box.Zero;
-  public BoxFitType Aspect { get; set; } = AspectStyle.Default;
+  public BoxFitType Fit { get; set; } = FitStyle.Default;
   public Transform Transform { get; set; } = Transform.Identity;
   public string FilterId { get; set; } = null;
+  public string ClipPathId  { get; set; } = null;
 
   #endregion
 
@@ -23,6 +24,11 @@ public class ImageNode : SceneNode,
   {
     Abstract = truth;
     return this;
+  }
+
+  public ImageNode UseAntiAliasing(bool truth)
+  {
+    throw new NotImplementedException();
   }
 
   public ImageNode UseUrl(string url)
@@ -36,14 +42,16 @@ public class ImageNode : SceneNode,
     Frame = frame;
     return this;
   }
+
   public ImageNode UseFrame(Vector2 position, Vector2 size)
     => UseFrame(Box.From(position, size));
+
   public ImageNode UseFrame(Vector2 size)
     => UseFrame(Box.FromSize(size));
 
-  public ImageNode UseAspect(BoxFitType aspect)
+  public ImageNode UseFit(BoxFitType fit)
   {
-    Aspect = aspect;
+    Fit = fit;
     return this;
   }
 
@@ -62,20 +70,16 @@ public class ImageNode : SceneNode,
     throw new NotImplementedException();
   }
 
-  public ImageNode UseShadow(Vector2 offset, float sigma, float opacity)
-  {
-    throw new NotImplementedException();
-  }
-
   public ImageNode UseFilter(string filterId)
   {
     FilterId = filterId;
     return this;
   }
 
-  public ImageNode UseAntiAliasing(bool truth)
+  public ImageNode UseClipPath(string id)
   {
-    throw new NotImplementedException();
+    ClipPathId = id;
+    return this;
   }
 
   #endregion

@@ -60,7 +60,7 @@ public class SceneSvgExporter
       //.SetSvgAttribute("width", scene.Root.Frame.Width)
       //.SetSvgAttribute("height", scene.Root.Frame.Height)
       .SetSvgAttribute("viewBox", SerializeViewBox(scene.Root.ViewBox))
-      .SetSvgAttribute("preserveAspectRatio", SerializeAspectRatio(scene.Root.Aspect));
+      .SetSvgAttribute("preserveAspectRatio", SerializeAspectRatio(scene.Root.Fit));
 
     if (!string.IsNullOrEmpty(scene.Description))
     {
@@ -76,8 +76,8 @@ public class SceneSvgExporter
       .SetSvgAttribute("y", scene.Root.ViewBox.Y)
       .SetSvgAttribute("width", scene.Root.ViewBox.Width)
       .SetSvgAttribute("height", scene.Root.ViewBox.Height)
-      .SetSvgAttribute("fill", scene.Root.FillColor.ToStyle())
-      .SetSvgAttribute("fill-rule", scene.Root.FillRule.ToStyle());
+      .SetSvgAttribute("fill", scene.Root.FillColor.ToSvgStyle())
+      .SetSvgAttribute("fill-rule", scene.Root.FillRule.ToSvgStyle());
 
     foreach (ISceneNode child in scene.Root.Nodes)
       ExportAnyNode(child, scene.Root, xSvg.Root);
@@ -96,7 +96,7 @@ public class SceneSvgExporter
         .SetSvgAttribute("height", node.Frame.Height)
         .SetSvgAttribute("transform", transform)
         .SetSvgAttribute("viewBox", SerializeViewBox(node.ViewBox))
-        .SetSvgAttribute("preserveAspectRatio", SerializeAspectRatio(node.Aspect));
+        .SetSvgAttribute("preserveAspectRatio", SerializeAspectRatio(node.Fit));
 
 
     xView.NewSvgElement("rect")
@@ -104,8 +104,8 @@ public class SceneSvgExporter
          .SetSvgAttribute("y", node.ViewBox.Y)
          .SetSvgAttribute("width", node.ViewBox.Width)
          .SetSvgAttribute("height", node.ViewBox.Height)
-         .SetSvgAttribute("fill", node.FillColor.ToStyle())
-         .SetSvgAttribute("fill-rule", node.FillRule.ToStyle());
+         .SetSvgAttribute("fill", node.FillColor.ToSvgStyle())
+         .SetSvgAttribute("fill-rule", node.FillRule.ToSvgStyle());
 
     foreach (ISceneNode child in node.Nodes)
       ExportAnyNode(child, node, xView);
@@ -126,7 +126,7 @@ public class SceneSvgExporter
       .SetSvgAttribute("width", node.Frame.Width.ToString() ?? "100%")
       .SetSvgAttribute("height", node.Frame.Height.ToString() ?? "100%")
       .SetSvgAttribute("transform", transform)
-      .SetSvgAttribute("preserveAspectRatio", SerializeAspectRatio(node.Aspect))
+      .SetSvgAttribute("preserveAspectRatio", SerializeAspectRatio(node.Fit))
       .SetSvgAttribute("filter", filterId != null ? $"url(#{filterId})" : null)
       .SetSvgAttribute("shape-rendering", SerializeShapeRendering(node.AntiAlias))
       .SetSvgAttribute("href", source);
@@ -141,12 +141,12 @@ public class SceneSvgExporter
     parent.NewSvgElement("path")
         .SetSvgAttribute("id", node.Id)
         .SetSvgAttribute("transform", transform)
-        .SetSvgAttribute("fill", node.FillColor.ToStyle())
-        .SetSvgAttribute("fill-rule", node.FillRule.ToStyle())
-        .SetSvgAttribute("stroke", node.StrokeColor.ToStyle())
+        .SetSvgAttribute("fill", node.FillColor.ToSvgStyle())
+        .SetSvgAttribute("fill-rule", node.FillRule.ToSvgStyle())
+        .SetSvgAttribute("stroke", node.StrokeColor.ToSvgStyle())
         .SetSvgAttribute("stroke-width", node.StrokeWidth)
-        .SetSvgAttribute("stroke-linecap", node.StrokeCap.ToStyle())
-        .SetSvgAttribute("stroke-linejoin", node.StrokeJoint.ToStyle())
+        .SetSvgAttribute("stroke-linecap", node.StrokeCap.ToSvgStyle())
+        .SetSvgAttribute("stroke-linejoin", node.StrokeJoint.ToSvgStyle())
         .SetSvgAttribute("filter", filterId != null ? $"url(#{filterId})" : null)
         .SetSvgAttribute("shape-rendering", SerializeShapeRendering(node.AntiAlias))
         .SetSvgAttribute("d", node.Value?.ToSvgString());
@@ -162,14 +162,14 @@ public class SceneSvgExporter
     parent.NewSvgElement("text")
         .SetSvgAttribute("id", node.Id)
         .SetSvgAttribute("transform", transform)
-        .SetSvgAttribute("fill", node.FillColor.ToStyle())
-        .SetSvgAttribute("fill-rule", node.FillRule.ToStyle())
-        .SetSvgAttribute("font-family", node.FontFamily.ToStyle())
-        .SetSvgAttribute("font-weight", node.FontWeight.ToStyle())
-        .SetSvgAttribute("font-style", node.FontStyle.ToStyle())
+        .SetSvgAttribute("fill", node.FillColor.ToSvgStyle())
+        .SetSvgAttribute("fill-rule", node.FillRule.ToSvgStyle())
+        .SetSvgAttribute("font-family", node.FontFamily.ToSvgStyle())
+        .SetSvgAttribute("font-weight", node.FontWeight.ToSvgStyle())
+        .SetSvgAttribute("font-style", node.FontStyle.ToSvgStyle())
         .SetSvgAttribute("font-size", node.FontSize)
-        .SetSvgAttribute("text-anchor", node.Justify.ToStyle())
-        .SetSvgAttribute("alignment-baseline", node.Align.ToStyle())
+        .SetSvgAttribute("text-anchor", node.Justify.ToSvgStyle())
+        .SetSvgAttribute("alignment-baseline", node.Align.ToSvgStyle())
         .SetSvgAttribute("filter", filterId != null ? $"url(#{filterId})" : null)
         .SetSvgAttribute("shape-rendering", SerializeShapeRendering(node.AntiAlias))
         .SetSvgAttribute("text-rendering", SerializeTextRendering(node.AntiAlias))
@@ -208,7 +208,7 @@ public class SceneSvgExporter
         .Where(n => n.Type == SceneNodeType.Text)
         .Cast<TextNode>())
       {
-        string fontFamily = textNode.FontFamily.ToStyle();
+        string fontFamily = textNode.FontFamily.ToSvgStyle();
         if (fontFamily != null
           && !seenFonts.Contains(fontFamily)
           && _fontUrls.TryGetValue(fontFamily, out string fontUrl))
@@ -261,7 +261,7 @@ public class SceneSvgExporter
   }
 
   private string SerializeAspectRatio(BoxFitType? type)
-    => type?.ToStyle() ?? AspectStyle.XMidYMidMeet;
+    => type?.ToSvgStyle() ?? FitStyle.SvgXMidYMidMeet;
 
   private string SerializeShapeRendering(bool antialias)
     => antialias ? "auto" : "crispEdges";

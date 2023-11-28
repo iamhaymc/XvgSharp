@@ -1,7 +1,7 @@
 ﻿namespace Xvg;
 
 public class TextNode : SceneNode,
-  IAliasableNode<TextNode>, IFillableNode<TextNode>, IFilterableNode<TextNode>
+  IAliasableNode<TextNode>, IFillableNode<TextNode>, IFilterableNode<TextNode>, IClippable<TextNode>
 {
   public override SceneNodeType Type => SceneNodeType.Text;
 
@@ -15,12 +15,13 @@ public class TextNode : SceneNode,
   public FontStyleType FontStyle { get; set; } = Xvg.FontStyle.DefaultStyle;
   public float FontSize { get; set; } = Xvg.FontStyle.DefaultSize;
   public Vector2 Position { get; set; } = Vector2.Zero;
-  public Transform Transform { get; set; } = Transform.Identity;
   public TextJustifyType Justify { get; set; } = TextStyle.DefaultJustify;
   public TextAlignType Align { get; set; } = TextStyle.DefaultAlign;
-  public ColorType FillColor { get; set; } = FillStyle.DefaultColor;
+  public Transform Transform { get; set; } = Transform.Identity;
+  public ColorKind FillColor { get; set; } = FillStyle.DefaultColor;
   public FillRuleType FillRule { get; set; } = FillStyle.DefaultRule;
   public string FilterId { get; set; } = null;
+  public string ClipPathId  { get; set; } = null;
 
   #endregion
 
@@ -30,6 +31,11 @@ public class TextNode : SceneNode,
   {
     Abstract = truth;
     return this;
+  }
+
+  public TextNode UseAntiAliasing(bool truth)
+  {
+    throw new NotImplementedException();
   }
 
   public TextNode UseValue(string value)
@@ -71,7 +77,7 @@ public class TextNode : SceneNode,
     throw new NotImplementedException();
   }
 
-  public TextNode UseFill(ColorType color, FillRuleType rule)
+  public TextNode UseFill(ColorKind color, FillRuleType rule)
   {
     FillColor = color;
     FillRule = rule;
@@ -84,9 +90,10 @@ public class TextNode : SceneNode,
     return this;
   }
 
-  public TextNode UseAntiAliasing(bool truth)
+  public TextNode UseClipPath(string id)
   {
-    throw new NotImplementedException();
+    ClipPathId = id;
+    return this;
   }
 
   #endregion

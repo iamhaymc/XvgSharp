@@ -12,37 +12,37 @@ public enum StrokeJointType
 
 public static partial class StrokeStyle
 {
-  public static readonly ColorType DefaultColor = ColorType.Black;
+  public static readonly ColorKind DefaultColor = ColorKind.Black;
   public static readonly StrokeCapType DefaultCap = StrokeCapType.Butt;
   public static readonly StrokeJointType DefaultJoint = StrokeJointType.Miter;
   public static readonly float DefaultWidth = 1;
 
-  public const string CapButt = "butt";
-  public const string CapRound = "round";
-  public const string CapSquare = "square";
+  public const string SvgCapButt = "butt";
+  public const string SvgCapRound = "round";
+  public const string SvgCapSquare = "square";
 
-  public const string JointMiter = "miter";
-  public const string JointRound = "round";
-  public const string JointBevel = "bevel";
+  public const string SvgJointMiter = "miter";
+  public const string SvgJointRound = "round";
+  public const string SvgJointBevel = "bevel";
 
-  public static string ToStyle(this StrokeCapType self)
+  public static string ToSvgStyle(this StrokeCapType self)
   {
     switch (self)
     {
-      case StrokeCapType.Butt: return CapButt;
-      case StrokeCapType.Round: return CapRound;
-      case StrokeCapType.Square: return CapSquare;
+      case StrokeCapType.Butt: return SvgCapButt;
+      case StrokeCapType.Round: return SvgCapRound;
+      case StrokeCapType.Square: return SvgCapSquare;
       default: throw new NotSupportedException();
     }
   }
 
-  public static string ToStyle(this StrokeJointType self)
+  public static string ToSvgStyle(this StrokeJointType self)
   {
     switch (self)
     {
-      case StrokeJointType.Miter: return JointMiter;
-      case StrokeJointType.Round: return JointRound;
-      case StrokeJointType.Bevel: return JointBevel;
+      case StrokeJointType.Miter: return SvgJointMiter;
+      case StrokeJointType.Round: return SvgJointRound;
+      case StrokeJointType.Bevel: return SvgJointBevel;
       default: throw new NotSupportedException();
     }
   }

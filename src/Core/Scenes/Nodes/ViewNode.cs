@@ -1,7 +1,7 @@
 ﻿namespace Xvg;
 
 public class ViewNode : SceneNode,
-  IAliasableNode<ViewNode>, IFrameableNode<ViewNode>, IFillableNode<ViewNode>, IFilterableNode<ViewNode>
+  IAliasableNode<ViewNode>, IFrameableNode<ViewNode>, IFillableNode<ViewNode>, IFilterableNode<ViewNode>, IClippable<ViewNode>
 {
   public override SceneNodeType Type => SceneNodeType.View;
 
@@ -11,11 +11,12 @@ public class ViewNode : SceneNode,
   public bool AntiAlias { get; set; } = true;
   public Box Frame { get; set; } = Box.Zero;
   public Box ViewBox { get; set; } = Box.Zero;
-  public BoxFitType Aspect { get; set; } = AspectStyle.Default;
+  public BoxFitType Fit { get; set; } = FitStyle.Default;
   public Transform Transform { get; set; } = Transform.Identity;
-  public ColorType FillColor { get; set; } = FillStyle.DefaultColor;
+  public ColorKind FillColor { get; set; } = FillStyle.DefaultColor;
   public FillRuleType FillRule { get; set; } = FillStyle.DefaultRule;
   public string FilterId { get; set; } = null;
+  public string ClipPathId { get; set; } = null;
 
   #endregion
 
@@ -25,6 +26,11 @@ public class ViewNode : SceneNode,
   {
     Abstract = truth;
     return this;
+  }
+
+  public ViewNode UseAntiAliasing(bool truth)
+  {
+    throw new NotImplementedException();
   }
 
   public ViewNode UseFrame(Box frame)
@@ -39,28 +45,28 @@ public class ViewNode : SceneNode,
   public ViewNode UseFrame(Vector2 size)
     => UseFrame(Box.FromSize(size));
 
-  public ViewNode UseBox(Box box)
+  public ViewNode UseFit(BoxFitType fix)
+  {
+    Fit = fix;
+    return this;
+  }
+
+  public ViewNode UseViewBox(Box box)
   {
     ViewBox = box;
     return this;
   }
 
-  public ViewNode UseBox(Vector2 size, bool center)
-   => UseBox(Box.From(
+  public ViewNode UseViewBox(Vector2 size, bool center)
+   => UseViewBox(Box.From(
      center ? size.X / -2f : 0,
      center ? size.Y / -2f : 0, size.X, size.Y));
 
-  public ViewNode UseBox(Vector2 position, Vector2 size)
-     => UseBox(Box.From(position, size));
+  public ViewNode UseViewBox(Vector2 position, Vector2 size)
+     => UseViewBox(Box.From(position, size));
 
-  public ViewNode UseBox(Vector2 size)
-     => UseBox(Box.FromSize(size));
-
-  public ViewNode UseAspect(BoxFitType aspect)
-  {
-    Aspect = aspect;
-    return this;
-  }
+  public ViewNode UseViewBox(Vector2 size)
+     => UseViewBox(Box.FromSize(size));
 
   public ViewNode UseTranslation(Vector2 translation)
   {
@@ -77,7 +83,7 @@ public class ViewNode : SceneNode,
     throw new NotImplementedException();
   }
 
-  public ViewNode UseFill(ColorType color, FillRuleType rule)
+  public ViewNode UseFill(ColorKind color, FillRuleType rule)
   {
     FillColor = color;
     FillRule = rule;
@@ -90,9 +96,10 @@ public class ViewNode : SceneNode,
     return this;
   }
 
-  public ViewNode UseAntiAliasing(bool truth)
+  public ViewNode UseClipPath(string id)
   {
-    throw new NotImplementedException();
+    ClipPathId = id;
+    return this;
   }
 
   #endregion

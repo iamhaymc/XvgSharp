@@ -1,6 +1,6 @@
 ﻿namespace Xvg;
 
-public enum ColorType
+public enum ColorKind
 {
   None,
   Zero, Black, White, Red, Green, Blue,
@@ -21,7 +21,7 @@ public enum ColorType
 
 public static partial class ColorStyle
 {
-  public const ColorType Default = ColorType.Black;
+  public const ColorKind Default = ColorKind.Black;
 
   public const string None = "none";
   public const string Zero = "#00000000"; // black with no opacity (rrggbbaa)
@@ -178,160 +178,160 @@ public static partial class ColorStyle
 
   #endregion
 
-  public static string ToStyle(this ColorType self)
+  public static string ToSvgStyle(this ColorKind self)
   {
     switch (self)
     {
-      case ColorType.None: return None;
-      case ColorType.Zero: return Zero;
-      case ColorType.Black: return Black;
-      case ColorType.White: return White;
-      case ColorType.Red: return Red;
-      case ColorType.Green: return Green;
-      case ColorType.Blue: return Blue;
+      case ColorKind.None: return None;
+      case ColorKind.Zero: return Zero;
+      case ColorKind.Black: return Black;
+      case ColorKind.White: return White;
+      case ColorKind.Red: return Red;
+      case ColorKind.Green: return Green;
+      case ColorKind.Blue: return Blue;
 
-      case ColorType.Gray0: return Gray0;
-      case ColorType.Gray1: return Gray1;
-      case ColorType.Gray2: return Gray2;
-      case ColorType.Gray3: return Gray3;
-      case ColorType.Gray4: return Gray4;
-      case ColorType.Gray5: return Gray5;
-      case ColorType.Gray6: return Gray6;
-      case ColorType.Gray7: return Gray7;
-      case ColorType.Gray8: return Gray8;
-      case ColorType.Gray9: return Gray9;
+      case ColorKind.Gray0: return Gray0;
+      case ColorKind.Gray1: return Gray1;
+      case ColorKind.Gray2: return Gray2;
+      case ColorKind.Gray3: return Gray3;
+      case ColorKind.Gray4: return Gray4;
+      case ColorKind.Gray5: return Gray5;
+      case ColorKind.Gray6: return Gray6;
+      case ColorKind.Gray7: return Gray7;
+      case ColorKind.Gray8: return Gray8;
+      case ColorKind.Gray9: return Gray9;
 
-      case ColorType.Red0: return Red0;
-      case ColorType.Red1: return Red1;
-      case ColorType.Red2: return Red2;
-      case ColorType.Red3: return Red3;
-      case ColorType.Red4: return Red4;
-      case ColorType.Red5: return Red5;
-      case ColorType.Red6: return Red6;
-      case ColorType.Red7: return Red7;
-      case ColorType.Red8: return Red8;
-      case ColorType.Red9: return Red9;
+      case ColorKind.Red0: return Red0;
+      case ColorKind.Red1: return Red1;
+      case ColorKind.Red2: return Red2;
+      case ColorKind.Red3: return Red3;
+      case ColorKind.Red4: return Red4;
+      case ColorKind.Red5: return Red5;
+      case ColorKind.Red6: return Red6;
+      case ColorKind.Red7: return Red7;
+      case ColorKind.Red8: return Red8;
+      case ColorKind.Red9: return Red9;
 
-      case ColorType.Pink0: return Pink0;
-      case ColorType.Pink1: return Pink1;
-      case ColorType.Pink2: return Pink2;
-      case ColorType.Pink3: return Pink3;
-      case ColorType.Pink4: return Pink4;
-      case ColorType.Pink5: return Pink5;
-      case ColorType.Pink6: return Pink6;
-      case ColorType.Pink7: return Pink7;
-      case ColorType.Pink8: return Pink8;
-      case ColorType.Pink9: return Pink9;
+      case ColorKind.Pink0: return Pink0;
+      case ColorKind.Pink1: return Pink1;
+      case ColorKind.Pink2: return Pink2;
+      case ColorKind.Pink3: return Pink3;
+      case ColorKind.Pink4: return Pink4;
+      case ColorKind.Pink5: return Pink5;
+      case ColorKind.Pink6: return Pink6;
+      case ColorKind.Pink7: return Pink7;
+      case ColorKind.Pink8: return Pink8;
+      case ColorKind.Pink9: return Pink9;
 
-      case ColorType.Grape0: return Grape0;
-      case ColorType.Grape1: return Grape1;
-      case ColorType.Grape2: return Grape2;
-      case ColorType.Grape3: return Grape3;
-      case ColorType.Grape4: return Grape4;
-      case ColorType.Grape5: return Grape5;
-      case ColorType.Grape6: return Grape6;
-      case ColorType.Grape7: return Grape7;
-      case ColorType.Grape8: return Grape8;
-      case ColorType.Grape9: return Grape9;
+      case ColorKind.Grape0: return Grape0;
+      case ColorKind.Grape1: return Grape1;
+      case ColorKind.Grape2: return Grape2;
+      case ColorKind.Grape3: return Grape3;
+      case ColorKind.Grape4: return Grape4;
+      case ColorKind.Grape5: return Grape5;
+      case ColorKind.Grape6: return Grape6;
+      case ColorKind.Grape7: return Grape7;
+      case ColorKind.Grape8: return Grape8;
+      case ColorKind.Grape9: return Grape9;
 
-      case ColorType.Violet0: return Violet0;
-      case ColorType.Violet1: return Violet1;
-      case ColorType.Violet2: return Violet2;
-      case ColorType.Violet3: return Violet3;
-      case ColorType.Violet4: return Violet4;
-      case ColorType.Violet5: return Violet5;
-      case ColorType.Violet6: return Violet6;
-      case ColorType.Violet7: return Violet7;
-      case ColorType.Violet8: return Violet8;
-      case ColorType.Violet9: return Violet9;
+      case ColorKind.Violet0: return Violet0;
+      case ColorKind.Violet1: return Violet1;
+      case ColorKind.Violet2: return Violet2;
+      case ColorKind.Violet3: return Violet3;
+      case ColorKind.Violet4: return Violet4;
+      case ColorKind.Violet5: return Violet5;
+      case ColorKind.Violet6: return Violet6;
+      case ColorKind.Violet7: return Violet7;
+      case ColorKind.Violet8: return Violet8;
+      case ColorKind.Violet9: return Violet9;
 
-      case ColorType.Indigo0: return Indigo0;
-      case ColorType.Indigo1: return Indigo1;
-      case ColorType.Indigo2: return Indigo2;
-      case ColorType.Indigo3: return Indigo3;
-      case ColorType.Indigo4: return Indigo4;
-      case ColorType.Indigo5: return Indigo5;
-      case ColorType.Indigo6: return Indigo6;
-      case ColorType.Indigo7: return Indigo7;
-      case ColorType.Indigo8: return Indigo8;
-      case ColorType.Indigo9: return Indigo9;
+      case ColorKind.Indigo0: return Indigo0;
+      case ColorKind.Indigo1: return Indigo1;
+      case ColorKind.Indigo2: return Indigo2;
+      case ColorKind.Indigo3: return Indigo3;
+      case ColorKind.Indigo4: return Indigo4;
+      case ColorKind.Indigo5: return Indigo5;
+      case ColorKind.Indigo6: return Indigo6;
+      case ColorKind.Indigo7: return Indigo7;
+      case ColorKind.Indigo8: return Indigo8;
+      case ColorKind.Indigo9: return Indigo9;
 
-      case ColorType.Blue0: return Blue0;
-      case ColorType.Blue1: return Blue1;
-      case ColorType.Blue2: return Blue2;
-      case ColorType.Blue3: return Blue3;
-      case ColorType.Blue4: return Blue4;
-      case ColorType.Blue5: return Blue5;
-      case ColorType.Blue6: return Blue6;
-      case ColorType.Blue7: return Blue7;
-      case ColorType.Blue8: return Blue8;
-      case ColorType.Blue9: return Blue9;
+      case ColorKind.Blue0: return Blue0;
+      case ColorKind.Blue1: return Blue1;
+      case ColorKind.Blue2: return Blue2;
+      case ColorKind.Blue3: return Blue3;
+      case ColorKind.Blue4: return Blue4;
+      case ColorKind.Blue5: return Blue5;
+      case ColorKind.Blue6: return Blue6;
+      case ColorKind.Blue7: return Blue7;
+      case ColorKind.Blue8: return Blue8;
+      case ColorKind.Blue9: return Blue9;
 
-      case ColorType.Cyan0: return Cyan0;
-      case ColorType.Cyan1: return Cyan1;
-      case ColorType.Cyan2: return Cyan2;
-      case ColorType.Cyan3: return Cyan3;
-      case ColorType.Cyan4: return Cyan4;
-      case ColorType.Cyan5: return Cyan5;
-      case ColorType.Cyan6: return Cyan6;
-      case ColorType.Cyan7: return Cyan7;
-      case ColorType.Cyan8: return Cyan8;
-      case ColorType.Cyan9: return Cyan9;
+      case ColorKind.Cyan0: return Cyan0;
+      case ColorKind.Cyan1: return Cyan1;
+      case ColorKind.Cyan2: return Cyan2;
+      case ColorKind.Cyan3: return Cyan3;
+      case ColorKind.Cyan4: return Cyan4;
+      case ColorKind.Cyan5: return Cyan5;
+      case ColorKind.Cyan6: return Cyan6;
+      case ColorKind.Cyan7: return Cyan7;
+      case ColorKind.Cyan8: return Cyan8;
+      case ColorKind.Cyan9: return Cyan9;
 
-      case ColorType.Teal0: return Teal0;
-      case ColorType.Teal1: return Teal1;
-      case ColorType.Teal2: return Teal2;
-      case ColorType.Teal3: return Teal3;
-      case ColorType.Teal4: return Teal4;
-      case ColorType.Teal5: return Teal5;
-      case ColorType.Teal6: return Teal6;
-      case ColorType.Teal7: return Teal7;
-      case ColorType.Teal8: return Teal8;
-      case ColorType.Teal9: return Teal9;
+      case ColorKind.Teal0: return Teal0;
+      case ColorKind.Teal1: return Teal1;
+      case ColorKind.Teal2: return Teal2;
+      case ColorKind.Teal3: return Teal3;
+      case ColorKind.Teal4: return Teal4;
+      case ColorKind.Teal5: return Teal5;
+      case ColorKind.Teal6: return Teal6;
+      case ColorKind.Teal7: return Teal7;
+      case ColorKind.Teal8: return Teal8;
+      case ColorKind.Teal9: return Teal9;
 
-      case ColorType.Green0: return Green0;
-      case ColorType.Green1: return Green1;
-      case ColorType.Green2: return Green2;
-      case ColorType.Green3: return Green3;
-      case ColorType.Green4: return Green4;
-      case ColorType.Green5: return Green5;
-      case ColorType.Green6: return Green6;
-      case ColorType.Green7: return Green7;
-      case ColorType.Green8: return Green8;
-      case ColorType.Green9: return Green9;
+      case ColorKind.Green0: return Green0;
+      case ColorKind.Green1: return Green1;
+      case ColorKind.Green2: return Green2;
+      case ColorKind.Green3: return Green3;
+      case ColorKind.Green4: return Green4;
+      case ColorKind.Green5: return Green5;
+      case ColorKind.Green6: return Green6;
+      case ColorKind.Green7: return Green7;
+      case ColorKind.Green8: return Green8;
+      case ColorKind.Green9: return Green9;
 
-      case ColorType.Lime0: return Lime0;
-      case ColorType.Lime1: return Lime1;
-      case ColorType.Lime2: return Lime2;
-      case ColorType.Lime3: return Lime3;
-      case ColorType.Lime4: return Lime4;
-      case ColorType.Lime5: return Lime5;
-      case ColorType.Lime6: return Lime6;
-      case ColorType.Lime7: return Lime7;
-      case ColorType.Lime8: return Lime8;
-      case ColorType.Lime9: return Lime9;
+      case ColorKind.Lime0: return Lime0;
+      case ColorKind.Lime1: return Lime1;
+      case ColorKind.Lime2: return Lime2;
+      case ColorKind.Lime3: return Lime3;
+      case ColorKind.Lime4: return Lime4;
+      case ColorKind.Lime5: return Lime5;
+      case ColorKind.Lime6: return Lime6;
+      case ColorKind.Lime7: return Lime7;
+      case ColorKind.Lime8: return Lime8;
+      case ColorKind.Lime9: return Lime9;
 
-      case ColorType.Yellow0: return Yellow0;
-      case ColorType.Yellow1: return Yellow1;
-      case ColorType.Yellow2: return Yellow2;
-      case ColorType.Yellow3: return Yellow3;
-      case ColorType.Yellow4: return Yellow4;
-      case ColorType.Yellow5: return Yellow5;
-      case ColorType.Yellow6: return Yellow6;
-      case ColorType.Yellow7: return Yellow7;
-      case ColorType.Yellow8: return Yellow8;
-      case ColorType.Yellow9: return Yellow9;
+      case ColorKind.Yellow0: return Yellow0;
+      case ColorKind.Yellow1: return Yellow1;
+      case ColorKind.Yellow2: return Yellow2;
+      case ColorKind.Yellow3: return Yellow3;
+      case ColorKind.Yellow4: return Yellow4;
+      case ColorKind.Yellow5: return Yellow5;
+      case ColorKind.Yellow6: return Yellow6;
+      case ColorKind.Yellow7: return Yellow7;
+      case ColorKind.Yellow8: return Yellow8;
+      case ColorKind.Yellow9: return Yellow9;
 
-      case ColorType.Orange0: return Orange0;
-      case ColorType.Orange1: return Orange1;
-      case ColorType.Orange2: return Orange2;
-      case ColorType.Orange3: return Orange3;
-      case ColorType.Orange4: return Orange4;
-      case ColorType.Orange5: return Orange5;
-      case ColorType.Orange6: return Orange6;
-      case ColorType.Orange7: return Orange7;
-      case ColorType.Orange8: return Orange8;
-      case ColorType.Orange9: return Orange9;
+      case ColorKind.Orange0: return Orange0;
+      case ColorKind.Orange1: return Orange1;
+      case ColorKind.Orange2: return Orange2;
+      case ColorKind.Orange3: return Orange3;
+      case ColorKind.Orange4: return Orange4;
+      case ColorKind.Orange5: return Orange5;
+      case ColorKind.Orange6: return Orange6;
+      case ColorKind.Orange7: return Orange7;
+      case ColorKind.Orange8: return Orange8;
+      case ColorKind.Orange9: return Orange9;
 
       default: throw new NotSupportedException();
     }

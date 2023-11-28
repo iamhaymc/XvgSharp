@@ -5,8 +5,6 @@ public enum FontFamilyType
   SansSerif,
   Serif,
   Monospace,
-  Display,
-  Bitmap,
 }
 
 public enum FontWeightType
@@ -26,47 +24,43 @@ public static partial class FontStyle
   public const FontStyleType DefaultStyle = FontStyleType.Normal;
   public static readonly float DefaultSize = 16;
 
-  public const string FamilyM3x6 = "m5x7";
-  public const string FamilyRobotoMono = "Roboto Mono";
-  public const string FamilyOpenSans = "Open Sans";
-  public const string FamilyMerriweather = "Merriweather";
-  public const string FamilyComfortaa = "Comfortaa";
+  public const string SvgFamilyOpenSans = "Open Sans";
+  public const string SvgFamilyLora = "Lora";
+  public const string SvgFamilyFiraCode = "Fira Code";
 
-  public const string WeightNormal = "normal";
-  public const string WeightBold = "bold";
+  public const string SvgWeightNormal = "normal";
+  public const string SvgWeightBold = "bold";
 
-  public const string StyleNormal = "normal";
-  public const string StyleItalic = "italic";
+  public const string SvgStyleNormal = "normal";
+  public const string SvgStyleItalic = "italic";
 
-  public static string ToStyle(this FontFamilyType self)
+  public static string ToSvgStyle(this FontFamilyType self)
   {
     switch (self)
     {
-      case FontFamilyType.SansSerif: return FamilyOpenSans;
-      case FontFamilyType.Serif: return FamilyMerriweather;
-      case FontFamilyType.Monospace: return FamilyRobotoMono;
-      case FontFamilyType.Display: return FamilyComfortaa;
-      case FontFamilyType.Bitmap: return FamilyM3x6;
+      case FontFamilyType.SansSerif: return SvgFamilyOpenSans;
+      case FontFamilyType.Serif: return SvgFamilyLora;
+      case FontFamilyType.Monospace: return SvgFamilyFiraCode;
       default: throw new NotSupportedException();
     }
   }
 
-  public static string ToStyle(this FontWeightType self)
+  public static string ToSvgStyle(this FontWeightType self)
   {
     switch (self)
     {
-      case FontWeightType.Normal: return WeightNormal;
-      case FontWeightType.Bold: return WeightBold;
+      case FontWeightType.Normal: return SvgWeightNormal;
+      case FontWeightType.Bold: return SvgWeightBold;
       default: throw new NotSupportedException();
     }
   }
 
-  public static string ToStyle(this FontStyleType self)
+  public static string ToSvgStyle(this FontStyleType self)
   {
     switch (self)
     {
-      case FontStyleType.Normal: return StyleNormal;
-      case FontStyleType.Italic: return StyleItalic;
+      case FontStyleType.Normal: return SvgStyleNormal;
+      case FontStyleType.Italic: return SvgStyleItalic;
       default: throw new NotSupportedException();
     }
   }

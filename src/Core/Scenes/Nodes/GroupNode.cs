@@ -1,7 +1,7 @@
 ﻿namespace Xvg;
 
 public class GroupNode : SceneNode,
-  IAliasableNode<GroupNode>, IFilterableNode<GroupNode>
+  IAliasableNode<GroupNode>, IFilterableNode<GroupNode>, IClippable<GroupNode>
 {
   public override SceneNodeType Type => SceneNodeType.Group;
 
@@ -11,6 +11,7 @@ public class GroupNode : SceneNode,
   public bool AntiAlias { get; set; } = true;
   public Transform Transform { get; set; } = Transform.Identity;
   public string FilterId { get; set; } = null;
+  public string ClipPathId  { get; set; } = null;
 
   #endregion
 
@@ -20,6 +21,11 @@ public class GroupNode : SceneNode,
   {
     Abstract = truth;
     return this;
+  }
+
+  public GroupNode UseAntiAliasing(bool truth)
+  {
+    throw new NotImplementedException();
   }
 
   public GroupNode UseTranslation(Vector2 translation)
@@ -37,20 +43,16 @@ public class GroupNode : SceneNode,
     throw new NotImplementedException();
   }
 
-  public GroupNode UseShadow(Vector2 offset, float sigma, float opacity)
-  {
-    throw new NotImplementedException();
-  }
-
   public GroupNode UseFilter(string filterId)
   {
     FilterId = filterId;
     return this;
   }
 
-  public GroupNode UseAntiAliasing(bool truth)
+  public GroupNode UseClipPath(string id)
   {
-    throw new NotImplementedException();
+    ClipPathId = id;
+    return this;
   }
 
   #endregion

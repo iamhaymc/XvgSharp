@@ -1,7 +1,7 @@
 ﻿namespace Xvg;
 
 public class PathNode : SceneNode,
-  IAliasableNode<PathNode>, IFillableNode<PathNode>, IStrokableNode<PathNode>, IFilterableNode<PathNode>
+  IAliasableNode<PathNode>, IFillableNode<PathNode>, IStrokableNode<PathNode>, IFilterableNode<PathNode>, IClippable<PathNode>
 {
   public override SceneNodeType Type => SceneNodeType.Path;
 
@@ -11,13 +11,14 @@ public class PathNode : SceneNode,
   public bool AntiAlias { get; set; } = true;
   public Path Value { get; set; } = new Path();
   public Transform Transform { get; set; } = Transform.Identity;
-  public ColorType FillColor { get; set; } = FillStyle.DefaultColor;
+  public ColorKind FillColor { get; set; } = FillStyle.DefaultColor;
   public FillRuleType FillRule { get; set; } = FillStyle.DefaultRule;
-  public ColorType StrokeColor { get; set; } = StrokeStyle.DefaultColor;
+  public ColorKind StrokeColor { get; set; } = StrokeStyle.DefaultColor;
   public StrokeJointType StrokeJoint { get; set; } = StrokeStyle.DefaultJoint;
   public StrokeCapType StrokeCap { get; set; } = StrokeStyle.DefaultCap;
   public float StrokeWidth { get; set; } = StrokeStyle.DefaultWidth;
   public string FilterId { get; set; } = null;
+  public string ClipPathId  { get; set; } = null;
 
   #endregion
 
@@ -27,6 +28,11 @@ public class PathNode : SceneNode,
   {
     Abstract = truth;
     return this;
+  }
+
+  public PathNode UseAntiAliasing(bool truth)
+  {
+    throw new NotImplementedException();
   }
 
   public PathNode UseValue(Action<Path> edit)
@@ -50,14 +56,14 @@ public class PathNode : SceneNode,
     throw new NotImplementedException();
   }
 
-  public PathNode UseFill(ColorType color, FillRuleType rule)
+  public PathNode UseFill(ColorKind color, FillRuleType rule)
   {
     FillColor = color;
     FillRule = rule;
     return this;
   }
 
-  public PathNode UseStroke(ColorType color, StrokeJointType joint, StrokeCapType cap, float width)
+  public PathNode UseStroke(ColorKind color, StrokeJointType joint, StrokeCapType cap, float width)
   {
     StrokeColor = color;
     StrokeWidth = width;
@@ -72,9 +78,10 @@ public class PathNode : SceneNode,
     return this;
   }
 
-  public PathNode UseAntiAliasing(bool truth)
+  public PathNode UseClipPath(string id)
   {
-    throw new NotImplementedException();
+    ClipPathId = id;
+    return this;
   }
 
   #endregion
