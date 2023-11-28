@@ -1,15 +1,15 @@
 ﻿namespace Xvg;
 
-public class VgCloseStep : VgBaseStep
+public class CloseStep : StepBase
 {
-  public override VgPathStepType Type => VgPathStepType.Close;
+  public override PathStepType Type => PathStepType.Close;
 
-  public override IVgPathStep Translate(Vector2 translation)
+  public override IPathStep Translate(Vector2 translation)
   {
     return this;
   }
 
-  public override IVgPathStep Scale(Vector2 scale)
+  public override IPathStep Scale(Vector2 scale)
   {
     return this;
   }

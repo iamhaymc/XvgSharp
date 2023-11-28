@@ -1,14 +1,14 @@
 ﻿namespace Xvg;
 
-public class VgPathCsWriter : VgTextWriter
+public class VgPathCsExporter : TextWriter
 {
-  public VgPath Path { get; set; }
+  public Path Path { get; set; }
 
   private string _preScaleXTerm, _preScaleYTerm;
   private string _translateXTerm, _translateYTerm;
   private string _postScaleXTerm, _postScaleYTerm;
 
-  public string WriteCsString(VgPath path,
+  public string WriteCsString(Path path,
     string preScaleXTerm = null, string preScaleYTerm = null,
     string translateXTerm = null, string translateYTerm = null,
     string postScaleXTerm = null, string postScaleYTerm = null)
@@ -18,50 +18,50 @@ public class VgPathCsWriter : VgTextWriter
     _preScaleXTerm = preScaleXTerm; _preScaleYTerm = preScaleYTerm;
     _translateXTerm = translateXTerm; _translateYTerm = translateYTerm;
     _postScaleXTerm = postScaleXTerm; _postScaleYTerm = postScaleYTerm;
-    foreach (IVgPathStep step in Path.Steps)
+    foreach (IPathStep step in Path.Steps)
       AppendStep(step);
     return Dump();
   }
 
-  private void AppendStep(IVgPathStep step)
+  private void AppendStep(IPathStep step)
   {
     switch (step.Type)
     {
-      case VgPathStepType.MoveTo:
-        AppendMoveTo((VgMoveToStep)step);
+      case PathStepType.MoveTo:
+        AppendMoveTo((MoveToStep)step);
         break;
-      case VgPathStepType.LineTo:
-        AppendLineTo((VgLineToStep)step);
+      case PathStepType.LineTo:
+        AppendLineTo((LineToStep)step);
         break;
-      case VgPathStepType.Bezier2To:
-        AppendBezier2To((VgBezier2ToStep)step);
+      case PathStepType.Bezier2To:
+        AppendBezier2To((Bezier2ToStep)step);
         break;
-      case VgPathStepType.Bezier3To:
-        AppendBezier3To((VgBezier3ToStep)step);
+      case PathStepType.Bezier3To:
+        AppendBezier3To((Bezier3ToStep)step);
         break;
-      case VgPathStepType.ArcTo:
-        AppendArcTo((VgArcToStep)step);
+      case PathStepType.ArcTo:
+        AppendArcTo((ArcToStep)step);
         break;
-      case VgPathStepType.Close:
-        AppendClose((VgCloseStep)step);
+      case PathStepType.Close:
+        AppendClose((CloseStep)step);
         break;
       default: return;
     }
   }
 
-  private void AppendMoveTo(VgMoveToStep step)
+  private void AppendMoveTo(MoveToStep step)
     => Add(FormatInvocation("MoveTo",
         FormatFloat(step.Point.X, _preScaleXTerm ?? _preScaleYTerm, _translateXTerm, _postScaleXTerm ?? _postScaleYTerm),
         FormatFloat(step.Point.Y, _preScaleXTerm ?? _preScaleYTerm, _translateYTerm, _postScaleXTerm ?? _postScaleYTerm),
         FormatBoolean(step.Relative)));
 
-  private void AppendLineTo(VgLineToStep step)
+  private void AppendLineTo(LineToStep step)
     => Add(FormatInvocation("LineTo",
         FormatFloat(step.Point.X, _preScaleXTerm ?? _preScaleYTerm, _translateXTerm, _postScaleXTerm ?? _postScaleYTerm),
         FormatFloat(step.Point.Y, _preScaleXTerm ?? _preScaleYTerm, _translateYTerm, _postScaleXTerm ?? _postScaleYTerm),
         FormatBoolean(step.Relative)));
 
-  private void AppendBezier2To(VgBezier2ToStep step)
+  private void AppendBezier2To(Bezier2ToStep step)
     => Add(FormatInvocation("Bezier2To",
         FormatFloat(step.Point0.X, _preScaleXTerm ?? _preScaleYTerm, _translateXTerm, _postScaleXTerm ?? _postScaleYTerm),
         FormatFloat(step.Point0.Y, _preScaleXTerm ?? _preScaleYTerm, _translateYTerm, _postScaleXTerm ?? _postScaleYTerm),
@@ -69,7 +69,7 @@ public class VgPathCsWriter : VgTextWriter
         FormatFloat(step.Point1.Y, _preScaleXTerm ?? _preScaleYTerm, _translateYTerm, _postScaleXTerm ?? _postScaleYTerm),
         FormatBoolean(step.Relative)));
 
-  private void AppendBezier3To(VgBezier3ToStep step)
+  private void AppendBezier3To(Bezier3ToStep step)
     => Add(FormatInvocation("Bezier3To",
         FormatFloat(step.Point0.X, _preScaleXTerm ?? _preScaleYTerm, _translateXTerm, _postScaleXTerm ?? _postScaleYTerm),
         FormatFloat(step.Point0.Y, _preScaleXTerm ?? _preScaleYTerm, _translateYTerm, _postScaleXTerm ?? _postScaleYTerm),
@@ -79,7 +79,7 @@ public class VgPathCsWriter : VgTextWriter
         FormatFloat(step.Point2.Y, _preScaleXTerm ?? _preScaleYTerm, _translateYTerm, _postScaleXTerm ?? _postScaleYTerm),
         FormatBoolean(step.Relative)));
 
-  private void AppendArcTo(VgArcToStep step)
+  private void AppendArcTo(ArcToStep step)
     => Add(FormatInvocation("ArcTo",
         FormatFloat(step.Point.X, _preScaleXTerm ?? _preScaleYTerm, _translateXTerm, _postScaleXTerm ?? _postScaleYTerm),
         FormatFloat(step.Point.Y, _preScaleXTerm ?? _preScaleYTerm, _translateYTerm, _postScaleXTerm ?? _postScaleYTerm),
@@ -89,7 +89,7 @@ public class VgPathCsWriter : VgTextWriter
         FormatBoolean(step.Large), FormatBoolean(step.Sweep),
         FormatBoolean(step.Relative)));
 
-  private void AppendClose(VgCloseStep step)
+  private void AppendClose(CloseStep step)
     => Add(FormatInvocation("Close"));
 
   private string FormatInvocation(string name, params string[] attributes)
@@ -114,18 +114,18 @@ public class VgPathCsWriter : VgTextWriter
 
 public static class VgPathCsWriterExtensions
 {
-  public static string ToCsString(this VgPath self,
+  public static string ToCsString(this Path self,
     string preScaleXTerm = null, string preScaleYTerm = null,
     string translateXTerm = null, string translateYTerm = null,
     string postScaleXTerm = null, string postScaleYTerm = null,
-    VgPathCsWriter writer = null)
+    VgPathCsExporter writer = null)
   {
-    return (writer ?? new VgPathCsWriter()).WriteCsString(self,
+    return (writer ?? new VgPathCsExporter()).WriteCsString(self,
       preScaleXTerm, preScaleYTerm,
       translateXTerm, translateYTerm,
       postScaleXTerm, postScaleYTerm);
   }
 
-  public static string ToCsString(this VgPath self, VgPathCsWriter writer)
-    => (writer ?? new VgPathCsWriter()).WriteCsString(self);
+  public static string ToCsString(this Path self, VgPathCsExporter writer)
+    => (writer ?? new VgPathCsExporter()).WriteCsString(self);
 }

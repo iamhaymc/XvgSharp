@@ -92,7 +92,7 @@ public static class ObjectExtensions
 public static class AssemblyExtensions
 {
   public static DirectoryInfo GetDirectory(this Assembly self)
-    => new DirectoryInfo(Path.GetDirectoryName(self.Location)!);
+    => new DirectoryInfo(System.IO.Path.GetDirectoryName(self.Location)!);
 }
 
 public static class MethodInfoExtensions

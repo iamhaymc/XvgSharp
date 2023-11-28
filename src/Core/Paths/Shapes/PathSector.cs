@@ -1,13 +1,13 @@
 ﻿namespace Xvg;
 
-public static class VgPathSectorExtensions
+public static class PathSectorExtensions
 {
-  public static VgPath AddSector(this VgPath self, Sector s)
+  public static Path AddSector(this Path self, Sector s)
   {
     return self.AddAnnularSector(s.P, s.R0, s.R1, s.A0, s.A1, s.Ccw);
   }
 
-  public static VgPath AddCircularSector(this VgPath self, Vector2 p, float r, float a0, float a1, bool ccw)
+  public static Path AddCircularSector(this Path self, Vector2 p, float r, float a0, float a1, bool ccw)
   {
     float da = ccw ? a0 - a1 : a1 - a0;
     if (da < 0) da = da % Radial.TauF + Radial.TauF;
@@ -22,12 +22,12 @@ public static class VgPathSectorExtensions
     return self;
   }
 
-  public static VgPath AddCircularSector(this VgPath self, float x, float y, float r, float a0, float a1, bool ccw)
+  public static Path AddCircularSector(this Path self, float x, float y, float r, float a0, float a1, bool ccw)
   {
     return self.AddCircularSector(new Vector2(x, y), r, a0, a1, ccw);
   }
 
-  public static VgPath AddAnnularSector(this VgPath self, Vector2 p, float r0, float r1, float a0, float a1, bool ccw)
+  public static Path AddAnnularSector(this Path self, Vector2 p, float r0, float r1, float a0, float a1, bool ccw)
   {
     float da = ccw ? a0 - a1 : a1 - a0;
     if (da < 0) da = da % Radial.TauF + Radial.TauF;
@@ -50,7 +50,7 @@ public static class VgPathSectorExtensions
     return self;
   }
 
-  public static VgPath AddAnnularSector(this VgPath self, float x, float y, float r0, float r1, float a0, float a1, bool ccw)
+  public static Path AddAnnularSector(this Path self, float x, float y, float r0, float r1, float a0, float a1, bool ccw)
   {
     return self.AddAnnularSector(new Vector2(x, y), r0, r1, a0, a1, ccw);
   }

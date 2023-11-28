@@ -1,6 +1,6 @@
 ﻿namespace Xvg;
 
-public class SceneJsonReader
+public class SceneJsonImporter
 {
   public Scene ReadJsonFile(string path)
   {

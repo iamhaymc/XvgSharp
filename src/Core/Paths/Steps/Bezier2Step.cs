@@ -1,20 +1,20 @@
 ﻿namespace Xvg;
 
-public class VgBezier2ToStep : VgBaseStep
+public class Bezier2ToStep : StepBase
 {
-  public override VgPathStepType Type => VgPathStepType.Bezier2To;
+  public override PathStepType Type => PathStepType.Bezier2To;
 
   public Vector2 Point0 { get; set; }
   public Vector2 Point1 { get; set; }
 
-  public VgBezier2ToStep(Vector2 point0, Vector2 point1, bool relative = false)
+  public Bezier2ToStep(Vector2 point0, Vector2 point1, bool relative = false)
   {
     Point0 = point0;
     Point1 = point1;
     Relative = relative;
   }
 
-  public override IVgPathStep Translate(Vector2 translation)
+  public override IPathStep Translate(Vector2 translation)
   {
     if (!Relative)
     {
@@ -24,7 +24,7 @@ public class VgBezier2ToStep : VgBaseStep
     return this;
   }
 
-  public override IVgPathStep Scale(Vector2 scale)
+  public override IPathStep Scale(Vector2 scale)
   {
     Point0 *= scale;
     Point1 *= scale;

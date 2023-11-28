@@ -2,10 +2,6 @@
 
 namespace Xvg;
 
-public class SvgCanvas : CanvasBase
-{
-}
-
 public static class XSvgDocument
 {
   public static readonly XNamespace SvgNamespace = @"http://www.w3.org/2000/svg";

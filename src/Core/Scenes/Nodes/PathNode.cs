@@ -9,7 +9,7 @@ public class PathNode : SceneNode,
 
   public bool Abstract { get; set; } = false;
   public bool AntiAlias { get; set; } = true;
-  public VgPath Value { get; set; } = new VgPath();
+  public Path Value { get; set; } = new Path();
   public Transform Transform { get; set; } = Transform.Identity;
   public ColorType FillColor { get; set; } = FillStyle.DefaultColor;
   public FillRuleType FillRule { get; set; } = FillStyle.DefaultRule;
@@ -29,7 +29,7 @@ public class PathNode : SceneNode,
     return this;
   }
 
-  public PathNode UseValue(Action<VgPath> edit)
+  public PathNode UseValue(Action<Path> edit)
   {
     edit?.Invoke(Value);
     return this;

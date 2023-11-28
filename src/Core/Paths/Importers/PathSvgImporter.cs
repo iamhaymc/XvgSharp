@@ -1,18 +1,18 @@
 ﻿namespace Xvg;
 
-public class VgPathSvgReader : VgTextReader
+public class PathSvgReader : TextReader
 {
-  public VgPath Path { get; set; }
+  public Path Path { get; set; }
   public Vector2 Position { get; set; }
   public Vector2 Position0 { get; set; }
 
-  public static VgPath ReadSvgString(string svg)
-      => new VgPathSvgReader().ReadSvgString(svg);
+  public static Path ReadSvgString(string svg)
+      => new PathSvgReader().ReadSvgString(svg);
 
-  public VgPath ReadSvgString(string svg, VgPath path = null)
+  public Path ReadSvgString(string svg, Path path = null)
   {
     Reset(svg);
-    Path = path ?? new VgPath();
+    Path = path ?? new Path();
     Position = Position0 = Vector2.Zero;
     while (ParseStep()) { };
     return Path;
@@ -111,10 +111,10 @@ public class VgPathSvgReader : VgTextReader
   private bool ParseBezier2STo(bool relative)
   {
     Vector2 c = Position;
-    IVgPathStep tail = Path.ToTail();
+    IPathStep tail = Path.ToTail();
     if (tail.IsBezier2To())
     {
-      VgBezier2ToStep bezier2Step = (VgBezier2ToStep)tail;
+      Bezier2ToStep bezier2Step = (Bezier2ToStep)tail;
       c += bezier2Step.Point1 - bezier2Step.Point0;
     }
     Vector2? p = ParseVector2();
@@ -145,10 +145,10 @@ public class VgPathSvgReader : VgTextReader
   private bool ParseBezier3STo(bool relative)
   {
     Vector2 c0 = Position;
-    IVgPathStep tail = Path.ToTail();
+    IPathStep tail = Path.ToTail();
     if (tail.IsBezier3To())
     {
-      VgBezier3ToStep bezier3Step = (VgBezier3ToStep)tail;
+      Bezier3ToStep bezier3Step = (Bezier3ToStep)tail;
       c0 += bezier3Step.Point2 - bezier3Step.Point1;
     }
     Vector2? c1 = ParseVector2();

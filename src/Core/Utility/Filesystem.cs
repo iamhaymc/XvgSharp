@@ -8,17 +8,17 @@ public static class FsPath
 {
   public static string Join(params string[] paths)
   {
-    return Path.Combine(paths);
+    return System.IO.Path.Combine(paths);
   }
 
   public static string[] Split(string path)
   {
-    return path.Split(Path.DirectorySeparatorChar);
+    return path.Split(System.IO.Path.DirectorySeparatorChar);
   }
 
   public static string Resolve(params string[] paths)
   {
-    return Path.GetFullPath(Path.Combine(paths));
+    return System.IO.Path.GetFullPath(System.IO.Path.Combine(paths));
   }
 
   public static string Relative(string fromPath, string toPath)
@@ -29,7 +29,7 @@ public static class FsPath
     Uri relativeUri = fromUri.MakeRelativeUri(toUri);
     string relativePath = Uri.UnescapeDataString(relativeUri.ToString());
     if (toUri.Scheme.Equals("file", StringComparison.InvariantCultureIgnoreCase))
-      relativePath = relativePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+      relativePath = relativePath.Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar);
     return relativePath;
   }
 
@@ -37,9 +37,9 @@ public static class FsPath
   {
     if (!string.IsNullOrEmpty(path))
     {
-      path = path.Trim().Replace(Path.DirectorySeparatorChar, '/');
-      if (isDirectory && path.Last() != Path.DirectorySeparatorChar)
-        path += Path.DirectorySeparatorChar;
+      path = path.Trim().Replace(System.IO.Path.DirectorySeparatorChar, '/');
+      if (isDirectory && path.Last() != System.IO.Path.DirectorySeparatorChar)
+        path += System.IO.Path.DirectorySeparatorChar;
     }
     return path;
   }
@@ -53,7 +53,7 @@ public static class FsPath
   /// </summary>
   public static string GetParent(string path)
   {
-    return Path.GetDirectoryName(path);
+    return System.IO.Path.GetDirectoryName(path);
   }
 
   /// <summary>
@@ -61,7 +61,7 @@ public static class FsPath
   /// </summary>
   public static string GetName(string path)
   {
-    return Path.GetFileName(path);
+    return System.IO.Path.GetFileName(path);
   }
 
   /// <summary>
@@ -69,7 +69,7 @@ public static class FsPath
   /// </summary>
   public static string GetStem(string path)
   {
-    return Path.GetFileNameWithoutExtension(path);
+    return System.IO.Path.GetFileNameWithoutExtension(path);
   }
 
   /// <summary>
@@ -77,27 +77,27 @@ public static class FsPath
   /// </summary>
   public static string GetExtension(string path)
   {
-    return Path.GetExtension(path);
+    return System.IO.Path.GetExtension(path);
   }
 
   public static string WithParent(string path, string parent)
   {
-    return Path.Combine(parent, Path.GetFileName(path));
+    return System.IO.Path.Combine(parent, System.IO.Path.GetFileName(path));
   }
 
   public static string WithName(string path, string name)
   {
-    return Path.Combine(Path.GetDirectoryName(path), name);
+    return System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path), name);
   }
 
   public static string WithStem(string path, string stem)
   {
-    return Path.Combine(Path.GetDirectoryName(path), stem + Path.GetExtension(path));
+    return System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path), stem + System.IO.Path.GetExtension(path));
   }
 
   public static string WithExtension(string path, string suffix)
   {
-    return Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + suffix);
+    return System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path), System.IO.Path.GetFileNameWithoutExtension(path) + suffix);
   }
 
   public static string GetUniquePathStem(string prefix = "")
@@ -109,12 +109,12 @@ public static class FsPath
   {
     if (!extension.StartsWith(".")) extension = "." + extension;
     string path = $"{prefix}{stem}-{Guid.NewGuid()}{extension}";
-    return !string.IsNullOrEmpty(parent) ? Path.Combine(parent, path) : path;
+    return !string.IsNullOrEmpty(parent) ? System.IO.Path.Combine(parent, path) : path;
   }
 
   public static string GetUniqueTempDirPath(string prefix = "")
   {
-    return Path.Combine(Path.GetTempPath(), GetUniquePathStem(prefix));
+    return System.IO.Path.Combine(System.IO.Path.GetTempPath(), GetUniquePathStem(prefix));
   }
 }
 
@@ -170,7 +170,7 @@ public static class FsFile
   /// </summary>
   public static string Ensure(string path)
   {
-    Directory.CreateDirectory(Path.GetDirectoryName(path));
+    Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path));
     return path;
   }
 
@@ -302,7 +302,7 @@ public static class FsDir
   {
     Directory.CreateDirectory(toPath.FullName);
     foreach (FileInfo fi in fromPath.GetFiles())
-      fi.CopyTo(Path.Combine(toPath.FullName, fi.Name), true);
+      fi.CopyTo(System.IO.Path.Combine(toPath.FullName, fi.Name), true);
     foreach (DirectoryInfo di in fromPath.GetDirectories())
       Copy(di, toPath.CreateSubdirectory(di.Name));
   }
@@ -369,10 +369,10 @@ public static class FileSystemInfoExtensions
     => self.IsFile() ? (FileInfo)self : null;
 
   public static DirectoryInfo JoinDir(this FileSystemInfo self, params string[] parts)
-    => new DirectoryInfo(Path.Combine(new[] { self.FullName }.Concat(parts).ToArray()));
+    => new DirectoryInfo(System.IO.Path.Combine((new[] { self.FullName }).Concat<string>(parts).ToArray<string>()));
 
   public static FileInfo JoinFile(this FileSystemInfo self, params string[] parts)
-    => new FileInfo(Path.Combine(new[] { self.FullName }.Concat(parts).ToArray()));
+    => new FileInfo(System.IO.Path.Combine((new[] { self.FullName }).Concat<string>(parts).ToArray<string>()));
 }
 
 public static class DirectoryInfoExtensions

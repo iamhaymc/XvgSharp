@@ -1,6 +1,6 @@
 ﻿namespace Xvg;
 
-public class SceneEmfWriter
+public class SceneEmfExporter
 {
   public FileInfo WriteEmfFile(Scene scene, string path)
   {
@@ -17,13 +17,13 @@ public class SceneEmfWriter
 
 public static class SceneEmfWriterExtensions
 {
-  public static FileInfo ToEmfFile(this Scene self, string path, SceneEmfWriter writer = null)
+  public static FileInfo ToEmfFile(this Scene self, string path, SceneEmfExporter writer = null)
   {
-    return (writer ?? new SceneEmfWriter()).WriteEmfFile(self, path);
+    return (writer ?? new SceneEmfExporter()).WriteEmfFile(self, path);
   }
 
-  public static Stream ToEmfStream(this Scene self, Stream stream, SceneEmfWriter writer = null)
+  public static Stream ToEmfStream(this Scene self, Stream stream, SceneEmfExporter writer = null)
   {
-    return (writer ?? new SceneEmfWriter()).WriteEmfStream(self, stream);
+    return (writer ?? new SceneEmfExporter()).WriteEmfStream(self, stream);
   }
 }

@@ -2,32 +2,32 @@
 
 namespace Xvg;
 
-public partial class VgTextWriter
+public partial class TextWriter
 {
   public StringBuilder Buffer { get; set; } = new StringBuilder();
 
-  public VgTextWriter Reset()
+  public TextWriter Reset()
   {
     Buffer ??= new StringBuilder();
     Buffer.Clear();
     return this;
   }
 
-  public VgTextWriter Add(string value)
+  public TextWriter Add(string value)
   {
     if (!string.IsNullOrEmpty(value))
       Buffer?.Append(value);
     return this;
   }
 
-  public VgTextWriter AddLine(string value)
+  public TextWriter AddLine(string value)
   {
     if (!string.IsNullOrEmpty(value))
       Buffer?.AppendLine(value);
     return this;
   }
 
-  public VgTextWriter AddFile(string path)
+  public TextWriter AddFile(string path)
   {
     string text = File.ReadAllText(path);
     if (!string.IsNullOrEmpty(text))
@@ -35,7 +35,7 @@ public partial class VgTextWriter
     return this;
   }
 
-  public VgTextWriter ToFile(string path)
+  public TextWriter ToFile(string path)
   {
     File.WriteAllText(path, Buffer?.ToString());
     return this;

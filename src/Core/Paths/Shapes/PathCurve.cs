@@ -1,39 +1,39 @@
 ﻿namespace Xvg;
 
-public enum VgPathCurveType
+public enum PathCurveType
 {
   Linear, StepBefore, StepAfter, Basis, Cardinal, CatmullRom
 }
 
-public interface IVgPathCurvePather
+public interface IPathCurvePather
 {
-  IVgPathCurvePather UsePath(VgPath path);
-  VgPath AppendFigure(IList<Vector2> points);
-  VgPath ExtendFigure(IList<Vector2> points);
+  IPathCurvePather UsePath(Path path);
+  Path AppendFigure(IList<Vector2> points);
+  Path ExtendFigure(IList<Vector2> points);
 }
 
-public abstract class VgBaseCurvePather : IVgPathCurvePather
+public abstract class BaseCurvePather : IPathCurvePather
 {
-  protected VgPath _path;
+  protected Path _path;
   protected int _point;
 
-  public IVgPathCurvePather UsePath(VgPath path)
+  public IPathCurvePather UsePath(Path path)
   {
     _path = path;
     return this;
   }
 
-  public VgPath AppendFigure(IList<Vector2> points)
+  public Path AppendFigure(IList<Vector2> points)
   {
     return GenerateSteps(points, started: false);
   }
 
-  public VgPath ExtendFigure(IList<Vector2> points)
+  public Path ExtendFigure(IList<Vector2> points)
   {
     return GenerateSteps(points, started: true);
   }
 
-  private VgPath GenerateSteps(IList<Vector2> points, bool started)
+  private Path GenerateSteps(IList<Vector2> points, bool started)
   {
     bool defined = false;
     for (int i = 0; i <= points.Count; ++i)
@@ -69,7 +69,7 @@ public abstract class VgBaseCurvePather : IVgPathCurvePather
   protected abstract void Point(Vector2 point);
 }
 
-public class VgLinearCurvePather : VgBaseCurvePather
+public class LinearCurvePather : BaseCurvePather
 {
   protected override void Point(Vector2 point)
   {
@@ -90,12 +90,12 @@ public class VgLinearCurvePather : VgBaseCurvePather
   }
 }
 
-public class VgStepCurvePather : VgBaseCurvePather
+public class StepCurvePather : BaseCurvePather
 {
   private readonly float _t;
   private float _x, _y;
 
-  public VgStepCurvePather(float t = 0.5f)
+  public StepCurvePather(float t = 0.5f)
   {
     _t = t;
   }
@@ -154,21 +154,21 @@ public class VgStepCurvePather : VgBaseCurvePather
   }
 }
 
-public class VgStepBeforeCurvePather : VgStepCurvePather
+public class StepBeforeCurvePather : StepCurvePather
 {
-  public VgStepBeforeCurvePather()
+  public StepBeforeCurvePather()
        : base(t: 0.0f)
   { }
 }
 
-public class VgStepAfterCurvePather : VgStepCurvePather
+public class StepAfterCurvePather : StepCurvePather
 {
-  public VgStepAfterCurvePather()
+  public StepAfterCurvePather()
        : base(t: 1.0f)
   { }
 }
 
-public class VgBasisCurvePather : VgBaseCurvePather
+public class BasisCurvePather : BaseCurvePather
 {
   private float _x0, _x1;
   private float _y0, _y1;
@@ -234,13 +234,13 @@ public class VgBasisCurvePather : VgBaseCurvePather
   }
 }
 
-public class VgCardinalCurvePather : VgBaseCurvePather
+public class CardinalCurvePather : BaseCurvePather
 {
   private readonly float _k;
   private float _x0, _x1, _x2;
   private float _y0, _y1, _y2;
 
-  public VgCardinalCurvePather(float tension = 0f)
+  public CardinalCurvePather(float tension = 0f)
   {
     _k = (1f - tension) / 6f;
   }
@@ -307,7 +307,7 @@ public class VgCardinalCurvePather : VgBaseCurvePather
   }
 }
 
-public class VgCatmullRomCurvePather : VgBaseCurvePather
+public class CatmullRomCurvePather : BaseCurvePather
 {
   private readonly float _alpha;
   private float _x0, _x1, _x2;
@@ -315,7 +315,7 @@ public class VgCatmullRomCurvePather : VgBaseCurvePather
   private float _l01_a, _l12_a, _l23_a;
   private float _l01_2a, _l12_2a, _l23_2a;
 
-  public VgCatmullRomCurvePather(float alpha = 0.5f)
+  public CatmullRomCurvePather(float alpha = 0.5f)
   {
     _alpha = alpha;
   }
@@ -403,90 +403,90 @@ public class VgCatmullRomCurvePather : VgBaseCurvePather
   }
 }
 
-public static class VgPathCurveExtensions
+public static class PathCurveExtensions
 {
-  public static VgPath CurveTo(this VgPath self, IVgPathCurvePather pather, params Vector2[] points)
+  public static Path CurveTo(this Path self, IPathCurvePather pather, params Vector2[] points)
   {
     return pather.UsePath(self).ExtendFigure(points);
   }
-  public static VgPath AddCurve(this VgPath self, IVgPathCurvePather pather, params Vector2[] points)
+  public static Path AddCurve(this Path self, IPathCurvePather pather, params Vector2[] points)
   {
     return pather.UsePath(self).AppendFigure(points);
   }
-  public static VgPath AddCurve(this VgPath self, VgPathCurveType type, params Vector2[] points)
+  public static Path AddCurve(this Path self, PathCurveType type, params Vector2[] points)
   {
     switch (type)
     {
       default:
-      case VgPathCurveType.Linear: return self.AddLinearCurve(points);
-      case VgPathCurveType.StepBefore: return self.AddStepBeforeCurve(points);
-      case VgPathCurveType.StepAfter: return self.AddStepAfterCurve(points);
-      case VgPathCurveType.Basis: return self.AddBasisCurve(points);
-      case VgPathCurveType.Cardinal: return self.AddCardinalCurve(points);
-      case VgPathCurveType.CatmullRom: return self.AddCatmullRomCurve(points);
+      case PathCurveType.Linear: return self.AddLinearCurve(points);
+      case PathCurveType.StepBefore: return self.AddStepBeforeCurve(points);
+      case PathCurveType.StepAfter: return self.AddStepAfterCurve(points);
+      case PathCurveType.Basis: return self.AddBasisCurve(points);
+      case PathCurveType.Cardinal: return self.AddCardinalCurve(points);
+      case PathCurveType.CatmullRom: return self.AddCatmullRomCurve(points);
     }
   }
 
-  public static VgPath LinearCurveTo(this VgPath self, params Vector2[] points)
+  public static Path LinearCurveTo(this Path self, params Vector2[] points)
   {
-    return self.CurveTo(new VgLinearCurvePather(), points);
+    return self.CurveTo(new LinearCurvePather(), points);
   }
-  public static VgPath AddLinearCurve(this VgPath self, params Vector2[] points)
+  public static Path AddLinearCurve(this Path self, params Vector2[] points)
   {
-    return self.AddCurve(new VgLinearCurvePather(), points);
-  }
-
-  public static VgPath StepCurveTo(this VgPath self, params Vector2[] points)
-  {
-    return self.CurveTo(new VgStepCurvePather(), points);
-  }
-  public static VgPath AddStepCurve(this VgPath self, params Vector2[] points)
-  {
-    return self.AddCurve(new VgStepCurvePather(), points);
+    return self.AddCurve(new LinearCurvePather(), points);
   }
 
-  public static VgPath StepBeforeCurveTo(this VgPath self, params Vector2[] points)
+  public static Path StepCurveTo(this Path self, params Vector2[] points)
   {
-    return self.CurveTo(new VgStepBeforeCurvePather(), points);
+    return self.CurveTo(new StepCurvePather(), points);
   }
-  public static VgPath AddStepBeforeCurve(this VgPath self, params Vector2[] points)
+  public static Path AddStepCurve(this Path self, params Vector2[] points)
   {
-    return self.AddCurve(new VgStepBeforeCurvePather(), points);
-  }
-
-  public static VgPath StepAfterCurveTo(this VgPath self, params Vector2[] points)
-  {
-    return self.CurveTo(new VgStepAfterCurvePather(), points);
-  }
-  public static VgPath AddStepAfterCurve(this VgPath self, params Vector2[] points)
-  {
-    return self.AddCurve(new VgStepAfterCurvePather(), points);
+    return self.AddCurve(new StepCurvePather(), points);
   }
 
-  public static VgPath BasisCurveTo(this VgPath self, params Vector2[] points)
+  public static Path StepBeforeCurveTo(this Path self, params Vector2[] points)
   {
-    return self.CurveTo(new VgBasisCurvePather(), points);
+    return self.CurveTo(new StepBeforeCurvePather(), points);
   }
-  public static VgPath AddBasisCurve(this VgPath self, params Vector2[] points)
+  public static Path AddStepBeforeCurve(this Path self, params Vector2[] points)
   {
-    return self.AddCurve(new VgBasisCurvePather(), points);
-  }
-
-  public static VgPath CardinalCurveTo(this VgPath self, params Vector2[] points)
-  {
-    return self.CurveTo(new VgCardinalCurvePather(), points);
-  }
-  public static VgPath AddCardinalCurve(this VgPath self, params Vector2[] points)
-  {
-    return self.AddCurve(new VgCardinalCurvePather(), points);
+    return self.AddCurve(new StepBeforeCurvePather(), points);
   }
 
-  public static VgPath CatmullRomCurveTo(this VgPath self, params Vector2[] points)
+  public static Path StepAfterCurveTo(this Path self, params Vector2[] points)
   {
-    return self.CurveTo(new VgCatmullRomCurvePather(), points);
+    return self.CurveTo(new StepAfterCurvePather(), points);
   }
-  public static VgPath AddCatmullRomCurve(this VgPath self, params Vector2[] points)
+  public static Path AddStepAfterCurve(this Path self, params Vector2[] points)
   {
-    return self.AddCurve(new VgCatmullRomCurvePather(), points);
+    return self.AddCurve(new StepAfterCurvePather(), points);
+  }
+
+  public static Path BasisCurveTo(this Path self, params Vector2[] points)
+  {
+    return self.CurveTo(new BasisCurvePather(), points);
+  }
+  public static Path AddBasisCurve(this Path self, params Vector2[] points)
+  {
+    return self.AddCurve(new BasisCurvePather(), points);
+  }
+
+  public static Path CardinalCurveTo(this Path self, params Vector2[] points)
+  {
+    return self.CurveTo(new CardinalCurvePather(), points);
+  }
+  public static Path AddCardinalCurve(this Path self, params Vector2[] points)
+  {
+    return self.AddCurve(new CardinalCurvePather(), points);
+  }
+
+  public static Path CatmullRomCurveTo(this Path self, params Vector2[] points)
+  {
+    return self.CurveTo(new CatmullRomCurvePather(), points);
+  }
+  public static Path AddCatmullRomCurve(this Path self, params Vector2[] points)
+  {
+    return self.AddCurve(new CatmullRomCurvePather(), points);
   }
 }

@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace Xvg;
 
-public class SceneSvgWriter
+public class SceneSvgExporter
 {
   public const bool DefaultIndent = true;
 
@@ -12,26 +12,26 @@ public class SceneSvgWriter
 
   private Dictionary<string, string> _fontUrls { get; set; }
 
-  public SceneSvgWriter()
+  public SceneSvgExporter()
   {
     UseImageEmbedding(true);
     UseFontEmbedding(false);
     _fontUrls = new Dictionary<string, string>();
   }
 
-  public SceneSvgWriter UseImageEmbedding(bool truth)
+  public SceneSvgExporter UseImageEmbedding(bool truth)
   {
     _embedImages = truth;
     return this;
   }
 
-  public SceneSvgWriter UseFontEmbedding(bool truth)
+  public SceneSvgExporter UseFontEmbedding(bool truth)
   {
     _embedFonts = truth;
     return this;
   }
 
-  public SceneSvgWriter BindFont(string family, string url)
+  public SceneSvgExporter BindFont(string family, string url)
   {
     _fontUrls[family] = url;
     return this;
@@ -292,18 +292,18 @@ public class SceneSvgWriter
 
 public static class SceneSvgWriterExtensions
 {
-  public static FileInfo ToSvgFile(this Scene self, string path, bool indent = SceneSvgWriter.DefaultIndent, SceneSvgWriter writer = null)
+  public static FileInfo ToSvgFile(this Scene self, string path, bool indent = SceneSvgExporter.DefaultIndent, SceneSvgExporter writer = null)
   {
-    return (writer ?? new SceneSvgWriter()).WriteSvgFile(self, path, indent);
+    return (writer ?? new SceneSvgExporter()).WriteSvgFile(self, path, indent);
   }
 
-  public static string ToSvgString(this Scene self, bool indent = SceneSvgWriter.DefaultIndent, SceneSvgWriter writer = null)
+  public static string ToSvgString(this Scene self, bool indent = SceneSvgExporter.DefaultIndent, SceneSvgExporter writer = null)
   {
-    return (writer ?? new SceneSvgWriter()).WriteSvgString(self, indent);
+    return (writer ?? new SceneSvgExporter()).WriteSvgString(self, indent);
   }
 
-  public static XDocument ToSvgDocument(this Scene self, SceneSvgWriter writer = null)
+  public static XDocument ToSvgDocument(this Scene self, SceneSvgExporter writer = null)
   {
-    return (writer ?? new SceneSvgWriter()).WriteSvgDocument(self);
+    return (writer ?? new SceneSvgExporter()).WriteSvgDocument(self);
   }
 }

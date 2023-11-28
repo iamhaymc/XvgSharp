@@ -2,7 +2,7 @@
 
 namespace Xvg;
 
-public partial class VgTextReader
+public partial class TextReader
 {
   public string Source { get; set; }
   public int Index { get; set; }
@@ -10,7 +10,7 @@ public partial class VgTextReader
   public int Column { get; set; }
   public StringBuilder Buffer { get; private set; } = new StringBuilder();
 
-  public VgTextReader Reset(string source)
+  public TextReader Reset(string source)
   {
     Source = source;
     Index = 0;

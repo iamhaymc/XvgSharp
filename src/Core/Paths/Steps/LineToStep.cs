@@ -1,25 +1,25 @@
 ﻿namespace Xvg;
 
-public class VgLineToStep : VgBaseStep
+public class LineToStep : StepBase
 {
-  public override VgPathStepType Type => VgPathStepType.LineTo;
+  public override PathStepType Type => PathStepType.LineTo;
 
   public Vector2 Point { get; set; }
 
-  public VgLineToStep(Vector2 point, bool relative = false)
+  public LineToStep(Vector2 point, bool relative = false)
   {
     Point = point;
     Relative = relative;
   }
 
-  public override IVgPathStep Translate(Vector2 translation)
+  public override IPathStep Translate(Vector2 translation)
   {
     if (!Relative)
       Point += translation;
     return this;
   }
 
-  public override IVgPathStep Scale(Vector2 scale)
+  public override IPathStep Scale(Vector2 scale)
   {
     Point *= scale;
     return this;
