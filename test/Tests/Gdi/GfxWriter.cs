@@ -1,6 +1,5 @@
-namespace Xvg
+namespace Xvg;
+
+public abstract class GfxWriter
 {
-  public abstract class GfxWriter
-  {
-  }
 }

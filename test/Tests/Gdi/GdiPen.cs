@@ -1,28 +1,27 @@
 using Vanara.PInvoke;
 using Gdi = Vanara.PInvoke.Gdi32;
 
-namespace Xvg
+namespace Xvg;
+
+public class GdiPen : IGfxPen
 {
-  public class GdiPen : IGfxPen
+  public IGfxColor Color { get; }
+  public float Width { get; }
+  public Gdi.SafeHPEN Handle { get; set; } = Gdi.SafeHPEN.Null;
+
+  public GdiPen(IGfxColor color, int width, Gdi.SafeHPEN handle)
   {
-    public IGfxColor Color { get; }
-    public float Width { get; }
-    public Gdi.SafeHPEN Handle { get; set; } = Gdi.SafeHPEN.Null;
+    Color = color;
+    Width = width;
+    Handle = handle;
+  }
 
-    public GdiPen(IGfxColor color, int width, Gdi.SafeHPEN handle)
+  public void Dispose()
+  {
+    if (Handle != Gdi.SafeHPEN.Null)
     {
-      Color = color;
-      Width = width;
-      Handle = handle;
-    }
-
-    public void Dispose()
-    {
-      if (Handle != Gdi.SafeHPEN.Null)
-      {
-        Gdi.DeleteObject(Handle);
-        Handle = Gdi.SafeHPEN.Null;
-      }
+      Gdi.DeleteObject(Handle);
+      Handle = Gdi.SafeHPEN.Null;
     }
   }
 }

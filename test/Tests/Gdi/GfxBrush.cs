@@ -1,11 +1,10 @@
 using System;
 
-namespace Xvg
-{
-  // Based on definitions in windef.h and wingdi.h
+namespace Xvg;
 
-  public interface IGfxBrush : IDisposable
-  {
-    IGfxColor Color { get; }
-  }
+// Based on definitions in windef.h and wingdi.h
+
+public interface IGfxBrush : IDisposable
+{
+  IGfxColor Color { get; }
 }

@@ -6,5 +6,5 @@
   <PropertyGroup>
     <ProjectName>$(Product).Core</ProjectName>
   </PropertyGroup>
-
+  
 </Project>
