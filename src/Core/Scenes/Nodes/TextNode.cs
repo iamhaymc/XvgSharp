@@ -1,99 +1,39 @@
 ﻿namespace Xvg;
 
-public class TextNode : SceneNode,
-  IAliasableNode<TextNode>, IFillableNode<TextNode>, IFilterableNode<TextNode>, IClippable<TextNode>
+public class TextNode : FillableShapeNode
 {
   public override SceneNodeType Type => SceneNodeType.Text;
 
-  #region [Properties]
-
-  public bool Abstract { get; set; } = false;
-  public bool AntiAlias { get; set; } = true;
-  public string Value { get; set; }
-  public FontFamilyType FontFamily { get; set; } = Xvg.FontStyle.DefaultFamily;
-  public FontWeightType FontWeight { get; set; } = Xvg.FontStyle.DefaultWeight;
-  public FontStyleType FontStyle { get; set; } = Xvg.FontStyle.DefaultStyle;
-  public float FontSize { get; set; } = Xvg.FontStyle.DefaultSize;
-  public Vector2 Position { get; set; } = Vector2.Zero;
-  public TextJustifyType Justify { get; set; } = TextStyle.DefaultJustify;
-  public TextAlignType Align { get; set; } = TextStyle.DefaultAlign;
-  public Transform Transform { get; set; } = Transform.Identity;
-  public FillStyle Fill { get; set; } = new FillStyle();
-  public string FilterId { get; set; } = null;
-  public string ClipPathId  { get; set; } = null;
-
-  #endregion
-
-  #region [Edit]
-
-  public TextNode UseAbstraction(bool truth)
-  {
-    Abstract = truth;
-    return this;
-  }
-
-  public TextNode UseAntiAliasing(bool truth)
-  {
-    throw new NotImplementedException();
-  }
+  public TextStyle Text { get; set; } = new TextStyle();
+  public FontStyle Font { get; set; } = new FontStyle();
 
   public TextNode UseValue(string value)
   {
-    Value = value;
+    Text.Value = value;
     return this;
   }
 
-  public TextNode UseFont(FontFamilyType family, FontWeightType weight, FontStyleType style, float size)
+  public TextNode UsePosition(Vector2? position = null, TextJustifyType? justify = null, TextAlignType? align = null)
   {
-    FontFamily = family;
-    FontWeight = weight;
-    FontStyle = style;
-    FontSize = size;
+    if (position != null)
+      Text.Position = position;
+    if (justify != null)
+      Text.Justify = justify;
+    if (align != null)
+      Text.Align = align;
     return this;
   }
 
-  public TextNode UsePosition(Vector2 position, TextJustifyType justify, TextAlignType align)
+  public TextNode UseFont(FontFamilyType? family = null, FontWeightType? weight = null, FontStyleType? style = null, float? size = null)
   {
-    Position = position;
-    Justify = justify;
-    Align = align;
+    if (family != null)
+      Font.Family = family;
+    if (weight != null)
+      Font.Weight = weight;
+    if (style != null)
+      Font.Style = style;
+    if (size != null)
+      Font.Size = size;
     return this;
   }
-
-  public TextNode UseTranslation(Vector2 translation)
-  {
-    throw new NotImplementedException();
-  }
-
-  public TextNode UseRotation(float degrees)
-  {
-    Transform = Transform.WithRotation(degrees);
-    return this;
-  }
-
-  public TextNode UseScale(Vector2 scale)
-  {
-    throw new NotImplementedException();
-  }
-
-  public TextNode UseFill(IColor color = null, FillRuleType? rule = null)
-  {
-    Fill.Color = color;
-    Fill.Rule = rule;
-    return this;
-  }
-
-  public TextNode UseFilter(string filterId)
-  {
-    FilterId = filterId;
-    return this;
-  }
-
-  public TextNode UseClipPath(string id)
-  {
-    ClipPathId = id;
-    return this;
-  }
-
-  #endregion
 }

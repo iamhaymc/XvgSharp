@@ -1,6 +1,6 @@
 ﻿namespace Xvg;
 
-public class StrokeStyle
+public class StrokeStyle : ISceneStyle
 {
   public IColor Color { get; set; }
   public StrokeJointType? Joint { get; set; }
@@ -18,7 +18,7 @@ public enum StrokeJointType
   Miter, Round, Bevel
 }
 
-public static class StrokeTypeSvgExtensions
+public static partial class StrokeTypeSvgExtensions
 {
   public const string SvgCapButt = "butt";
   public const string SvgCapRound = "round";

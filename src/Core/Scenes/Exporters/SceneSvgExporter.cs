@@ -76,7 +76,7 @@ public class SceneSvgExporter
         .Where(n => n.Type == SceneNodeType.Text)
         .Cast<TextNode>())
       {
-        string fontFamily = textNode.FontFamily.ToSvgStyle();
+        string fontFamily = textNode.Font.Family?.ToSvgStyle();
         if (fontFamily != null
           && !seenFonts.Contains(fontFamily)
           && _fontUrls.TryGetValue(fontFamily, out string fontUrl))
@@ -187,7 +187,7 @@ public class SceneSvgExporter
   private void ExportTextNode(TextNode node, ViewNode viewNode, XElement parent)
   {
     string transform = SerializeTransform(node.Transform,
-      offset: node.Position);
+      offset: node.Text.Position);
 
     string filterId = GenerateFilters(node, viewNode, parent);
 
@@ -196,16 +196,16 @@ public class SceneSvgExporter
       .SetSvgAttribute("transform", transform)
       .SetSvgAttribute("fill", node.Fill.Color?.ToHex() ?? "none")
       .SetSvgAttribute("fill-rule", node.Fill.Rule?.ToSvgStyle())
-      .SetSvgAttribute("font-family", node.FontFamily.ToSvgStyle())
-      .SetSvgAttribute("font-weight", node.FontWeight.ToSvgStyle())
-      .SetSvgAttribute("font-style", node.FontStyle.ToSvgStyle())
-      .SetSvgAttribute("font-size", node.FontSize)
-      .SetSvgAttribute("text-anchor", node.Justify.ToSvgStyle())
-      .SetSvgAttribute("alignment-baseline", node.Align.ToSvgStyle())
+      .SetSvgAttribute("font-family", node.Font.Family?.ToSvgStyle())
+      .SetSvgAttribute("font-weight", node.Font.Weight?.ToSvgStyle())
+      .SetSvgAttribute("font-style", node.Font.Style?.ToSvgStyle())
+      .SetSvgAttribute("font-size", node.Font.Size)
+      .SetSvgAttribute("text-anchor", node.Text.Justify?.ToSvgStyle())
+      .SetSvgAttribute("alignment-baseline", node.Text.Align?.ToSvgStyle())
       .SetSvgAttribute("filter", filterId != null ? $"url(#{filterId})" : null)
       .SetSvgAttribute("shape-rendering", SerializeShapeRendering(node.AntiAlias))
       .SetSvgAttribute("text-rendering", SerializeTextRendering(node.AntiAlias))
-      .SetSvgTextContent(node.Value);
+      .SetSvgTextContent(node.Text.Value);
   }
 
   private void ExportAnyNode(ISceneNode node, ViewNode viewNode, XElement parent)
@@ -215,10 +215,8 @@ public class SceneSvgExporter
       case SceneNodeType.View:
         ExportViewNode((ViewNode)node, viewNode, parent);
         break;
-      case SceneNodeType.Filter:
-        throw new NotImplementedException();
       case SceneNodeType.Group:
-        throw new NotImplementedException();;
+        throw new NotImplementedException();
       case SceneNodeType.Image:
         ExportImageNode((ImageNode)node, viewNode, parent);
         break;
@@ -268,7 +266,7 @@ public class SceneSvgExporter
   }
 
   private string SerializeFitStyle(BoxFitType? type)
-    => type?.ToSvgStyle() ?? FitStyle.SvgXMidYMidMeet;
+    => type?.ToSvgStyle();
 
   private string SerializeShapeRendering(bool antialias)
     => antialias ? "auto" : "crispEdges";

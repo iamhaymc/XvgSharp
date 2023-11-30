@@ -1,6 +1,6 @@
 ﻿namespace Xvg;
 
-public class FillStyle
+public class FillStyle : ISceneStyle
 {
   public IColor Color { get; set; }
   public FillRuleType? Rule { get; set; }

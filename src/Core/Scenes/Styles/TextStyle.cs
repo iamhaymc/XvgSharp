@@ -1,5 +1,13 @@
 ﻿namespace Xvg;
 
+public class TextStyle : ISceneStyle
+{
+  public string Value { get; set; }
+  public Vector2? Position { get; set; }
+  public TextJustifyType? Justify { get; set; }
+  public TextAlignType? Align { get; set; }
+}
+
 public enum TextJustifyType
 {
   Start, Middle, End
@@ -10,11 +18,8 @@ public enum TextAlignType
   Bottom, Middle, Top
 }
 
-public static partial class TextStyle
+public static partial class TextTypeSvgExtensions
 {
-  public static readonly TextJustifyType DefaultJustify = TextJustifyType.Start;
-  public static readonly TextAlignType DefaultAlign = TextAlignType.Bottom;
-
   public const string SvgJustifyStart = "start";
   public const string SvgJustifyMiddle = "middle";
   public const string SvgJustifyEnd = "end";

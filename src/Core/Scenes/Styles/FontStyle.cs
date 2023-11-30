@@ -1,5 +1,13 @@
 ﻿namespace Xvg;
 
+public class FontStyle : ISceneStyle
+{
+  public FontFamilyType? Family { get; set; }
+  public FontWeightType? Weight { get; set; }
+  public FontStyleType? Style { get; set; }
+  public float? Size { get; set; }
+}
+
 public enum FontFamilyType
 {
   SansSerif,
@@ -17,13 +25,8 @@ public enum FontStyleType
   Normal, Italic
 }
 
-public static partial class FontStyle
+public static partial class FontTypeSvgExtensions
 {
-  public const FontFamilyType DefaultFamily = FontFamilyType.SansSerif;
-  public const FontWeightType DefaultWeight = FontWeightType.Normal;
-  public const FontStyleType DefaultStyle = FontStyleType.Normal;
-  public static readonly float DefaultSize = 16;
-
   public const string SvgFamilyOpenSans = "Open Sans";
   public const string SvgFamilyLora = "Lora";
   public const string SvgFamilyFiraCode = "Fira Code";

@@ -1,9 +1,7 @@
 ﻿namespace Xvg;
 
-public static partial class FitStyle
+public static partial class BoxFitTypeSvgExtensions
 {
-  public const BoxFitType Default = BoxFitType.XMidYMidMeet;
-
   public const string SvgXMidYMidMeet = "xMidYMid meet";
   public const string SvgXMidYMidSlice = "xMidYMid slice";
   public const string SvgNone = "none";
