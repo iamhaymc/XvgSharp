@@ -1,7 +1,7 @@
 ﻿namespace Xvg;
 
-public class ViewNode : SceneNode,
-  IAliasableNode<ViewNode>, IFrameableNode<ViewNode>, IFillableNode<ViewNode>, IFilterableNode<ViewNode>, IClippable<ViewNode>
+public class ViewNode : ContainerNode,
+  IFrameableNode<ViewNode>, IFillableNode<ViewNode>
 {
   public override SceneNodeType Type => SceneNodeType.View;
 
@@ -22,16 +22,6 @@ public class ViewNode : SceneNode,
 
   #region [Edit]
 
-  public ViewNode UseAbstraction(bool truth)
-  {
-    Abstract = truth;
-    return this;
-  }
-
-  public ViewNode UseAntiAliasing(bool truth)
-  {
-    throw new NotImplementedException();
-  }
 
   public ViewNode UseFrame(Box frame)
   {
@@ -68,37 +58,10 @@ public class ViewNode : SceneNode,
   public ViewNode UseViewBox(Vector2 size)
      => UseViewBox(Xvg.Box.FromSize(size));
 
-  public ViewNode UseTranslation(Vector2 translation)
-  {
-    throw new NotImplementedException();
-  }
-
-  public ViewNode UseRotation(float degrees)
-  {
-    throw new NotImplementedException();
-  }
-
-  public ViewNode UseScale(Vector2 scale)
-  {
-    throw new NotImplementedException();
-  }
-
   public ViewNode UseFill(ColorKind color, FillRuleType rule)
   {
     FillColor = color;
     FillRule = rule;
-    return this;
-  }
-
-  public ViewNode UseFilter(string filterId)
-  {
-    FilterId = filterId;
-    return this;
-  }
-
-  public ViewNode UseClipPath(string id)
-  {
-    ClipPathId = id;
     return this;
   }
 

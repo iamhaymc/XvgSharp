@@ -1,0 +1,12 @@
+{
+  "configuration": "Release",
+  "platform": "x86",
+  "solution": "Submittals.Pipeline.sln",
+  "lib_project": "src/Lib/Submittals.Pipeline.Lib.csproj",
+  "sdk_project": "src/Sdk/Submittals.Pipeline.Sdk.csproj",
+  "test_assembly": "test/bin/AnyCPU/Debug/Trane.Submittals.Pipeline.Tests.dll",
+  "msbuild_exe": "C:/Program Files (x86)/Microsoft Visual Studio/2019/Professional/MSBuild/Current/Bin/amd64/MSBuild.exe",
+  "vstest_exe": "C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/Common7/IDE/CommonExtensions/Microsoft/TestWindow/vstest.console.exe",
+  "astyle_exe": "fmtcc.exe",
+  "maximum_cpus": 2
+}

@@ -1,6 +1,4 @@
 ﻿using System.Text;
-using System.Text.Json.Nodes;
-using System.Text.Json;
 
 namespace Xvg;
 
@@ -240,37 +238,6 @@ public static class FsFile
   public static void StringOut(string path, string data)
   {
     File.WriteAllText(Ensure(path), data);
-  }
-
-  /// <summary>
-  /// Returns a specific model if JSON from a file
-  /// </summary>
-  public static T JsonIn<T>(string path)
-  {
-    JsonSerializerOptions options = Json.IndentByDefault ? Json.IndentedJsonOptions : Json.UnindentedJsonOptions;
-    using (FileStream jsonStream = StreamIn(path))
-      return JsonSerializer.Deserialize<T>(jsonStream, options);
-  }
-
-  /// <summary>
-  /// Returns an generic model of JSON from a file
-  /// </summary>
-  public static JsonNode JsonIn(string path)
-  {
-    using (FileStream jsonStream = StreamIn(path))
-      return JsonNode.Parse(jsonStream);
-  }
-
-  /// <summary>
-  /// Writes JSON of a model to a file
-  /// (The parent directory is ensured)
-  /// </summary>
-  public static void JsonOut<T>(string path, T data, bool indent = Json.IndentByDefault)
-  {
-    JsonSerializerOptions options = indent ? Json.IndentedJsonOptions : Json.UnindentedJsonOptions;
-    using (FileStream jsonStream = StreamOut(Ensure(path)))
-    using (Utf8JsonWriter jsonWriter = new Utf8JsonWriter(jsonStream))
-      JsonSerializer.Serialize(jsonWriter, data, options);
   }
 }
 

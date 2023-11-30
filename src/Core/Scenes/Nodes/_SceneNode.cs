@@ -1,20 +1,23 @@
-﻿namespace Xvg;
+﻿using System.Collections;
+using System.Diagnostics;
+
+namespace Xvg;
 
 public enum SceneNodeType
 {
   Filter, View, Group, Path, Text, Image, Copy,
 }
 
-public interface ISceneNode
+public interface ISceneNode : IEnumerable<ISceneNode>
 {
   SceneNodeType Type { get; }
   string Id { get; }
-  IEnumerable<ISceneNode> YieldNodes();
+  IEnumerable<ISceneNode> Enumerate();
 }
 
 public interface IAbstractableNode<TNode>
 {
-  public bool Abstract { get; set; }
+  bool Abstract { get; set; }
   TNode UseAbstraction(bool truth);
 }
 
@@ -36,7 +39,7 @@ public interface ITransformableNode<TNode> : ISceneNode
 
 public interface IFrameableNode<TNode> : ISceneNode
 {
-  Box Frame { get; set; }
+  Box? Frame { get; set; }
   TNode UseFrame(Box frame);
   TNode UseFrame(Vector2 position, Vector2 size);
   TNode UseFrame(Vector2 size);
@@ -46,19 +49,15 @@ public interface IFrameableNode<TNode> : ISceneNode
 public interface IFillableNode<TNode> : ISceneNode
   where TNode : ISceneNode
 {
-  ColorKind FillColor { get; set; }
-  FillRuleType FillRule { get; set; }
-  TNode UseFill(ColorKind color, FillRuleType rule);
+  FillStyle Fill { get; set; }
+  TNode UseFill(IColor? color = null, FillRuleType? rule = null);
 }
 
 public interface IStrokableNode<TNode> : ISceneNode
   where TNode : ISceneNode
 {
-  ColorKind StrokeColor { get; set; }
-  StrokeJointType StrokeJoint { get; set; }
-  StrokeCapType StrokeCap { get; set; }
-  float StrokeWidth { get; set; }
-  TNode UseStroke(ColorKind color, StrokeJointType join, StrokeCapType cap, float width);
+  StrokeStyle Stroke { get; set; }
+  TNode UseStroke(IColor? color = null, StrokeJointType? join = null, StrokeCapType? cap = null, float? width = null);
 }
 
 public interface IFilterableNode<TNode> : ISceneNode
@@ -77,8 +76,12 @@ public interface IClippable<TNode> : ISceneNode
 
 public abstract class SceneNode : ISceneNode
 {
+  #region [Properties]
+
   public abstract SceneNodeType Type { get; }
   public string Id { get; set; }
+
+  #endregion
 
   public SceneNode EnsureId()
   {
@@ -87,11 +90,17 @@ public abstract class SceneNode : ISceneNode
     return this;
   }
 
-  public abstract IEnumerable<ISceneNode> YieldNodes();
+  public IEnumerator<ISceneNode> GetEnumerator() => Enumerate().GetEnumerator();
+  IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+  public virtual IEnumerable<ISceneNode> Enumerate()
+  {
+    yield return this;
+  }
 }
 
 public abstract class ContainerNode : SceneNode,
-    IAbstractableNode<ContainerNode>, IAliasableNode<ContainerNode>, ITransformableNode<ContainerNode>, IFrameableNode<ContainerNode>, IFillableNode<ContainerNode>, IFilterableNode<ContainerNode>, IClippable<ContainerNode>
+    IAbstractableNode<ContainerNode>, IAliasableNode<ContainerNode>, ITransformableNode<ContainerNode>, 
+    IFilterableNode<ContainerNode>, IClippable<ContainerNode>
 {
   #region [Properties]
 
@@ -105,8 +114,7 @@ public abstract class ContainerNode : SceneNode,
 
   #endregion
 
-
-  public override IEnumerable<ISceneNode> YieldNodes()
+  public override IEnumerable<ISceneNode> Enumerate()
   {
     yield return this;
     foreach (ISceneNode child in Nodes)
@@ -124,28 +132,26 @@ public abstract class ContainerNode : SceneNode,
 
   public ContainerNode UseAntiAliasing(bool truth)
   {
-    throw new NotImplementedException();
-  }
-
-  public ContainerNode UseValue(Action<Path> edit)
-  {
-    edit?.Invoke(Value);
+    AntiAlias = truth;
     return this;
   }
 
   public ContainerNode UseTranslation(Vector2 translation)
   {
-    throw new NotImplementedException();
+    Transform.Translation = translation;
+    return this;
   }
 
   public ContainerNode UseRotation(float degrees)
   {
-    throw new NotImplementedException();
+    Transform.Rotation = degrees;
+    return this;
   }
 
   public ContainerNode UseScale(Vector2 scale)
   {
-    throw new NotImplementedException();
+    Transform.Scale = scale;
+    return this;
   }
 
   public ContainerNode UseFilter(string filterId)
@@ -164,7 +170,8 @@ public abstract class ContainerNode : SceneNode,
 }
 
 public abstract class ShapeNode : SceneNode,
-    IAbstractableNode<ShapeNode>, IAliasableNode<ShapeNode>, ITransformableNode<ShapeNode>, IFilterableNode<ShapeNode>, IClippable<ShapeNode>
+    IAbstractableNode<ShapeNode>, IAliasableNode<ShapeNode>, ITransformableNode<ShapeNode>, 
+    IFilterableNode<ShapeNode>, IClippable<ShapeNode>
 {
   #region [Properties]
 
@@ -176,11 +183,6 @@ public abstract class ShapeNode : SceneNode,
 
   #endregion
 
-  public override IEnumerable<ISceneNode> YieldNodes()
-  {
-    yield return this;
-  }
-
   #region [Edit]
 
   public ShapeNode UseAbstraction(bool truth)
@@ -191,28 +193,26 @@ public abstract class ShapeNode : SceneNode,
 
   public ShapeNode UseAntiAliasing(bool truth)
   {
-    throw new NotImplementedException();
-  }
-
-  public ShapeNode UseValue(Action<Path> edit)
-  {
-    edit?.Invoke(Value);
+    AntiAlias = truth;
     return this;
   }
 
   public ShapeNode UseTranslation(Vector2 translation)
   {
-    throw new NotImplementedException();
+    Transform.Translation = translation;
+    return this;
   }
 
   public ShapeNode UseRotation(float degrees)
   {
-    throw new NotImplementedException();
+    Transform.Rotation = degrees;
+    return this;
   }
 
   public ShapeNode UseScale(Vector2 scale)
   {
-    throw new NotImplementedException();
+    Transform.Scale = scale;
+    return this;
   }
 
   public ShapeNode UseFilter(string filterId)

@@ -1,15 +1,19 @@
 ﻿namespace Xvg;
 
-public enum FillRuleType
+public class FillStyle
 {
-  NonZero, EvenOdd
+  public IColor? Color { get; set; }
+  public FillRuleType? Rule { get; set; }
 }
 
-public static partial class FillStyle
+public enum FillRuleType
 {
-  public const ColorKind DefaultColor = ColorKind.White;
-  public const FillRuleType DefaultRule = FillRuleType.NonZero;
+  NonZero,
+  EvenOdd
+}
 
+public static partial class FillRuleTypeSvgExtensions
+{
   public const string SvgNonZero = "nonzero";
   public const string SvgEvenOdd = "evenodd";
 

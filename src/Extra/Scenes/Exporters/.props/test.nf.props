@@ -1,0 +1,20 @@
+<Project>
+
+  <Import Project="_common.props" />
+  <Import Project="_version.props" />
+  <Import Project="_framework.nf.props" />
+
+  <Import Project="library.nf.packages.props" />
+  <Import Project="library.nf.references.props" />
+
+  <Import Project="test.nf.packages.props" />
+  <Import Project="test.nf.references.props" />
+
+  <!-- Standard properties -->
+
+  <PropertyGroup>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+</Project>

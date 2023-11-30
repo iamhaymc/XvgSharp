@@ -1,0 +1,10 @@
+<Project>
+
+  <Import Project="_common.props" />
+  <Import Project="_version.props" />
+  <Import Project="_framework.props" />
+  
+  <Import Project="library.packages.props" />
+  <Import Project="library.nf.packages.props" />
+  
+</Project>

@@ -1,6 +1,6 @@
 ﻿namespace Xvg;
 
-public struct Transform
+public class Transform
 {
   public Vector2 Translation { get; set; }
   public float Rotation { get; set; }
