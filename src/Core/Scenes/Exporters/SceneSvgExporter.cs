@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Xml.Linq;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace Xvg;
 
@@ -57,27 +58,29 @@ public class SceneSvgExporter
   private XDocument ExportScene(Scene scene)
   {
     XDocument xSvg = XSvgDocument.Create()
-      //.SetSvgAttribute("width", scene.Root.Frame.Width)
-      //.SetSvgAttribute("height", scene.Root.Frame.Height)
-      .SetSvgAttribute("viewBox", SerializeViewBox(scene.Root.ViewBox))
-      .SetSvgAttribute("preserveAspectRatio", SerializeAspectRatio(scene.Root.Fit));
+      .SetSvgAttribute("width", scene.Root.Frame?.Width)
+      .SetSvgAttribute("height", scene.Root.Frame?.Height)
+      .SetSvgAttribute("viewBox", SerializeViewBox(scene.Root.Box))
+      .SetSvgAttribute("preserveAspectRatio", CreateFitStyle(scene.Root.Fit));
 
     if (!string.IsNullOrEmpty(scene.Description))
     {
-      xSvg.NewSvgElement("desc")
-        .SetValue(scene.Description);
+      xSvg.NewSvgElement("desc").SetValue(scene.Description);
     }
 
     ExportFonts(scene, xSvg.Root);
 
-
-    xSvg.NewSvgElement("rect")
-      .SetSvgAttribute("x", scene.Root.ViewBox.X)
-      .SetSvgAttribute("y", scene.Root.ViewBox.Y)
-      .SetSvgAttribute("width", scene.Root.ViewBox.Width)
-      .SetSvgAttribute("height", scene.Root.ViewBox.Height)
-      .SetSvgAttribute("fill", scene.Root.FillColor.ToSvgStyle())
-      .SetSvgAttribute("fill-rule", scene.Root.FillRule.ToSvgStyle());
+    if (scene.Root.FillColor.HasValue)
+    {
+      // The fill rect is contained by the view so it uses the the view box metrics.
+      // Fallback to the view frame metrics if the view box is not defined.
+      xSvg.NewSvgElement("rect")
+        .SetSvgAttribute("x", scene.Root.Box?.X ?? scene.Root.Frame?.X)
+        .SetSvgAttribute("y", scene.Root.Box?.Y ?? scene.Root.Frame?.Y)
+        .SetSvgAttribute("width", scene.Root.Box?.Width ?? scene.Root.Frame?.Width)
+        .SetSvgAttribute("height", scene.Root.Box?.Height ?? scene.Root.Frame?.Height)
+        .SetSvgAttribute("fill", scene.Root.FillColor.Value.ToSvgStyle());
+    }
 
     foreach (ISceneNode child in scene.Root.Nodes)
       ExportAnyNode(child, scene.Root, xSvg.Root);
@@ -90,22 +93,25 @@ public class SceneSvgExporter
     string transform = SerializeTransform(node.Transform);
 
     XElement xView = parent.NewSvgElement("svg")
-        .SetSvgAttribute("x", node.Frame.X)
-        .SetSvgAttribute("y", node.Frame.Y)
-        .SetSvgAttribute("width", node.Frame.Width)
-        .SetSvgAttribute("height", node.Frame.Height)
+        .SetSvgAttribute("x", node.Frame?.X)
+        .SetSvgAttribute("y", node.Frame?.Y)
+        .SetSvgAttribute("width", node.Frame?.Width)
+        .SetSvgAttribute("height", node.Frame?.Height)
         .SetSvgAttribute("transform", transform)
-        .SetSvgAttribute("viewBox", SerializeViewBox(node.ViewBox))
-        .SetSvgAttribute("preserveAspectRatio", SerializeAspectRatio(node.Fit));
+        .SetSvgAttribute("viewBox", SerializeViewBox(node.Box))
+        .SetSvgAttribute("preserveAspectRatio", CreateFitStyle(node.Fit));
 
-
-    xView.NewSvgElement("rect")
-         .SetSvgAttribute("x", node.ViewBox.X)
-         .SetSvgAttribute("y", node.ViewBox.Y)
-         .SetSvgAttribute("width", node.ViewBox.Width)
-         .SetSvgAttribute("height", node.ViewBox.Height)
-         .SetSvgAttribute("fill", node.FillColor.ToSvgStyle())
-         .SetSvgAttribute("fill-rule", node.FillRule.ToSvgStyle());
+    if (node.FillColor.HasValue)
+    {
+      // The fill rect is contained by the view so it uses the the view box metrics.
+      // Fallback to the view frame metrics if the view box is not defined.
+      xView.NewSvgElement("rect")
+        .SetSvgAttribute("x", node.Box?.X ?? node.Frame?.X)
+        .SetSvgAttribute("y", node.Box?.Y ?? node.Frame?.Y)
+        .SetSvgAttribute("width", node.Box?.Width ?? node.Frame?.Width)
+        .SetSvgAttribute("height", node.Box?.Height ?? node.Frame?.Height)
+        .SetSvgAttribute("fill", node.FillColor.Value.ToSvgStyle());
+    }
 
     foreach (ISceneNode child in node.Nodes)
       ExportAnyNode(child, node, xView);
@@ -126,7 +132,7 @@ public class SceneSvgExporter
       .SetSvgAttribute("width", node.Frame.Width.ToString() ?? "100%")
       .SetSvgAttribute("height", node.Frame.Height.ToString() ?? "100%")
       .SetSvgAttribute("transform", transform)
-      .SetSvgAttribute("preserveAspectRatio", SerializeAspectRatio(node.Fit))
+      .SetSvgAttribute("preserveAspectRatio", CreateFitStyle(node.Fit))
       .SetSvgAttribute("filter", filterId != null ? $"url(#{filterId})" : null)
       .SetSvgAttribute("shape-rendering", SerializeShapeRendering(node.AntiAlias))
       .SetSvgAttribute("href", source);
@@ -139,17 +145,17 @@ public class SceneSvgExporter
     string filterId = ExportFilters(node, viewNode, parent);
 
     parent.NewSvgElement("path")
-        .SetSvgAttribute("id", node.Id)
-        .SetSvgAttribute("transform", transform)
-        .SetSvgAttribute("fill", node.FillColor.ToSvgStyle())
-        .SetSvgAttribute("fill-rule", node.FillRule.ToSvgStyle())
-        .SetSvgAttribute("stroke", node.StrokeColor.ToSvgStyle())
-        .SetSvgAttribute("stroke-width", node.StrokeWidth)
-        .SetSvgAttribute("stroke-linecap", node.StrokeCap.ToSvgStyle())
-        .SetSvgAttribute("stroke-linejoin", node.StrokeJoint.ToSvgStyle())
-        .SetSvgAttribute("filter", filterId != null ? $"url(#{filterId})" : null)
-        .SetSvgAttribute("shape-rendering", SerializeShapeRendering(node.AntiAlias))
-        .SetSvgAttribute("d", node.Value?.ToSvgString());
+      .SetSvgAttribute("id", node.Id)
+      .SetSvgAttribute("transform", transform)
+      .SetSvgAttribute("fill", node.FillColor?.ToSvgStyle() ?? "none")
+      .SetSvgAttribute("fill-rule", node.FillRule?.ToSvgStyle())
+      .SetSvgAttribute("stroke", node.StrokeColor.ToSvgStyle())
+      .SetSvgAttribute("stroke-width", node.StrokeWidth)
+      .SetSvgAttribute("stroke-linecap", node.StrokeCap.ToSvgStyle())
+      .SetSvgAttribute("stroke-linejoin", node.StrokeJoint.ToSvgStyle())
+      .SetSvgAttribute("filter", filterId != null ? $"url(#{filterId})" : null)
+      .SetSvgAttribute("shape-rendering", SerializeShapeRendering(node.AntiAlias))
+      .SetSvgAttribute("d", node.Value?.ToSvgString());
   }
 
   private void ExportTextNode(TextNode node, ViewNode viewNode, XElement parent)
@@ -160,20 +166,20 @@ public class SceneSvgExporter
     string filterId = ExportFilters(node, viewNode, parent);
 
     parent.NewSvgElement("text")
-        .SetSvgAttribute("id", node.Id)
-        .SetSvgAttribute("transform", transform)
-        .SetSvgAttribute("fill", node.FillColor.ToSvgStyle())
-        .SetSvgAttribute("fill-rule", node.FillRule.ToSvgStyle())
-        .SetSvgAttribute("font-family", node.FontFamily.ToSvgStyle())
-        .SetSvgAttribute("font-weight", node.FontWeight.ToSvgStyle())
-        .SetSvgAttribute("font-style", node.FontStyle.ToSvgStyle())
-        .SetSvgAttribute("font-size", node.FontSize)
-        .SetSvgAttribute("text-anchor", node.Justify.ToSvgStyle())
-        .SetSvgAttribute("alignment-baseline", node.Align.ToSvgStyle())
-        .SetSvgAttribute("filter", filterId != null ? $"url(#{filterId})" : null)
-        .SetSvgAttribute("shape-rendering", SerializeShapeRendering(node.AntiAlias))
-        .SetSvgAttribute("text-rendering", SerializeTextRendering(node.AntiAlias))
-        .SetSvgTextContent(node.Value);
+      .SetSvgAttribute("id", node.Id)
+      .SetSvgAttribute("transform", transform)
+      .SetSvgAttribute("fill", node.FillColor?.ToSvgStyle() ?? "none")
+      .SetSvgAttribute("fill-rule", node.FillRule?.ToSvgStyle())
+      .SetSvgAttribute("font-family", node.FontFamily.ToSvgStyle())
+      .SetSvgAttribute("font-weight", node.FontWeight.ToSvgStyle())
+      .SetSvgAttribute("font-style", node.FontStyle.ToSvgStyle())
+      .SetSvgAttribute("font-size", node.FontSize)
+      .SetSvgAttribute("text-anchor", node.Justify.ToSvgStyle())
+      .SetSvgAttribute("alignment-baseline", node.Align.ToSvgStyle())
+      .SetSvgAttribute("filter", filterId != null ? $"url(#{filterId})" : null)
+      .SetSvgAttribute("shape-rendering", SerializeShapeRendering(node.AntiAlias))
+      .SetSvgAttribute("text-rendering", SerializeTextRendering(node.AntiAlias))
+      .SetSvgTextContent(node.Value);
   }
 
   private void ExportAnyNode(ISceneNode node, ViewNode viewNode, XElement parent)
@@ -183,6 +189,10 @@ public class SceneSvgExporter
       case SceneNodeType.View:
         ExportViewNode((ViewNode)node, viewNode, parent);
         break;
+      case SceneNodeType.Filter:
+        throw new NotImplementedException();
+      case SceneNodeType.Group:
+        throw new NotImplementedException();;
       case SceneNodeType.Image:
         ExportImageNode((ImageNode)node, viewNode, parent);
         break;
@@ -192,6 +202,8 @@ public class SceneSvgExporter
       case SceneNodeType.Text:
         ExportTextNode((TextNode)node, viewNode, parent);
         break;
+      case SceneNodeType.Copy:
+        throw new NotImplementedException();
       default:
         break;
     }
@@ -253,14 +265,14 @@ public class SceneSvgExporter
   private string SerializeViewBox(Box? box)
   {
     string value = !box.HasValue ? null :
-        string.Join(" ",
-            box.Value.X, box.Value.Y,
-            box.Value.Width, box.Value.Height)
-        .Trim();
+      string.Join(" ",
+        box.Value.X, box.Value.Y,
+        box.Value.Width, box.Value.Height)
+      .Trim();
     return string.IsNullOrEmpty(value) ? null : value;
   }
 
-  private string SerializeAspectRatio(BoxFitType? type)
+  private string CreateFitStyle(BoxFitType? type)
     => type?.ToSvgStyle() ?? FitStyle.SvgXMidYMidMeet;
 
   private string SerializeShapeRendering(bool antialias)
@@ -271,11 +283,11 @@ public class SceneSvgExporter
 
   private string SerializeTransform(Transform transform, Vector2? offset = null, Vector2? origin = null)
     => string
-        .Join(" ",
-          SerializeTranslation(transform, offset),
-          SerializeRotation(transform, origin),
-          SerializeScale(transform))
-        .Trim();
+      .Join(" ",
+        SerializeTranslation(transform, offset),
+        SerializeRotation(transform, origin),
+        SerializeScale(transform))
+      .Trim();
 
   private string SerializeTranslation(Transform transform, Vector2? offset = null)
   {

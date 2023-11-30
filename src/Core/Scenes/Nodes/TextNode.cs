@@ -18,8 +18,8 @@ public class TextNode : SceneNode,
   public TextJustifyType Justify { get; set; } = TextStyle.DefaultJustify;
   public TextAlignType Align { get; set; } = TextStyle.DefaultAlign;
   public Transform Transform { get; set; } = Transform.Identity;
-  public ColorKind FillColor { get; set; } = FillStyle.DefaultColor;
-  public FillRuleType FillRule { get; set; } = FillStyle.DefaultRule;
+  public ColorKind? FillColor { get; set; } = null;
+  public FillRuleType? FillRule { get; set; } = null;
   public string FilterId { get; set; } = null;
   public string ClipPathId  { get; set; } = null;
 

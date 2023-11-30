@@ -9,12 +9,12 @@ public class ViewNode : SceneNode,
 
   public bool Abstract { get; set; } = false;
   public bool AntiAlias { get; set; } = true;
-  public Box Frame { get; set; } = Box.Zero;
-  public Box ViewBox { get; set; } = Box.Zero;
+  public Box? Frame { get; set; } = null;
+  public Box? Box { get; set; } = null;
   public BoxFitType Fit { get; set; } = FitStyle.Default;
   public Transform Transform { get; set; } = Transform.Identity;
-  public ColorKind FillColor { get; set; } = FillStyle.DefaultColor;
-  public FillRuleType FillRule { get; set; } = FillStyle.DefaultRule;
+  public ColorKind? FillColor { get; set; } = null;
+  public FillRuleType? FillRule { get; set; } = null;
   public string FilterId { get; set; } = null;
   public string ClipPathId { get; set; } = null;
 
@@ -40,10 +40,10 @@ public class ViewNode : SceneNode,
   }
 
   public ViewNode UseFrame(Vector2 position, Vector2 size)
-    => UseFrame(Box.From(position, size));
+    => UseFrame(Xvg.Box.From(position, size));
 
   public ViewNode UseFrame(Vector2 size)
-    => UseFrame(Box.FromSize(size));
+    => UseFrame(Xvg.Box.FromSize(size));
 
   public ViewNode UseFit(BoxFitType fix)
   {
@@ -53,20 +53,20 @@ public class ViewNode : SceneNode,
 
   public ViewNode UseViewBox(Box box)
   {
-    ViewBox = box;
+    Box = box;
     return this;
   }
 
   public ViewNode UseViewBox(Vector2 size, bool center)
-   => UseViewBox(Box.From(
+   => UseViewBox(Xvg.Box.From(
      center ? size.X / -2f : 0,
      center ? size.Y / -2f : 0, size.X, size.Y));
 
   public ViewNode UseViewBox(Vector2 position, Vector2 size)
-     => UseViewBox(Box.From(position, size));
+     => UseViewBox(Xvg.Box.From(position, size));
 
   public ViewNode UseViewBox(Vector2 size)
-     => UseViewBox(Box.FromSize(size));
+     => UseViewBox(Xvg.Box.FromSize(size));
 
   public ViewNode UseTranslation(Vector2 translation)
   {

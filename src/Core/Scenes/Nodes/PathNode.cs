@@ -11,8 +11,8 @@ public class PathNode : SceneNode,
   public bool AntiAlias { get; set; } = true;
   public Path Value { get; set; } = new Path();
   public Transform Transform { get; set; } = Transform.Identity;
-  public ColorKind FillColor { get; set; } = FillStyle.DefaultColor;
-  public FillRuleType FillRule { get; set; } = FillStyle.DefaultRule;
+  public ColorKind? FillColor { get; set; } = null;
+  public FillRuleType? FillRule { get; set; } = null;
   public ColorKind StrokeColor { get; set; } = StrokeStyle.DefaultColor;
   public StrokeJointType StrokeJoint { get; set; } = StrokeStyle.DefaultJoint;
   public StrokeCapType StrokeCap { get; set; } = StrokeStyle.DefaultCap;
