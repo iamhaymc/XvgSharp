@@ -50,14 +50,14 @@ public interface IFillableNode<TNode> : ISceneNode
   where TNode : ISceneNode
 {
   FillStyle Fill { get; set; }
-  TNode UseFill(IColor? color = null, FillRuleType? rule = null);
+  TNode UseFill(IColor color = null, FillRuleType? rule = null);
 }
 
 public interface IStrokableNode<TNode> : ISceneNode
   where TNode : ISceneNode
 {
   StrokeStyle Stroke { get; set; }
-  TNode UseStroke(IColor? color = null, StrokeJointType? join = null, StrokeCapType? cap = null, float? width = null);
+  TNode UseStroke(IColor color = null, StrokeJointType? join = null, StrokeCapType? cap = null, float? width = null);
 }
 
 public interface IFilterableNode<TNode> : ISceneNode
@@ -118,7 +118,7 @@ public abstract class ContainerNode : SceneNode,
   {
     yield return this;
     foreach (ISceneNode child in Nodes)
-      foreach (ISceneNode node in child.YieldNodes())
+      foreach (ISceneNode node in child)
         yield return node;
   }
 

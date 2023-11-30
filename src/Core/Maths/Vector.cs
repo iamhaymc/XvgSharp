@@ -16,7 +16,9 @@ public struct Vector2 : IComparable<Vector2>
     float d = X - other.X;
     return (d != 0) ? (int)d : (int)(Y - other.Y);
   }
+  
   public override bool Equals(object o) => Eq((Vector2)o);
+
   public override int GetHashCode() => base.GetHashCode();
 
   public bool Eq(Vector2 v)

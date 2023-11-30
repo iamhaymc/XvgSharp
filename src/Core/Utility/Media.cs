@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using System.Text;
+﻿using System.Text;
 
 namespace Xvg;
 
@@ -99,11 +98,11 @@ public static class Media
     int datai = url.LastIndexOf(',');
     if (datai < 0)
       throw new ArgumentException("Failure to parse data URL because it is invalid");
-    string head = url[5..datai].ToLower();
+    string head = url.Substring(5, datai).ToLower();
     int metai = head.IndexOf(';');
     if (metai < 0)
       throw new ArgumentException("Failure to parse data URL because it is invalid");
-    string mime = head[..metai].ToLower();
+    string mime = head.Substring(5, metai).ToLower();
     string data = url.Substring(datai + 1, url.Length - datai - 1);
     return head.Contains("base64")
       ? new BinaryMedia(Convert.FromBase64String(data), mime)
@@ -159,10 +158,14 @@ public abstract class MediaBase<D> : IMedia
   }
 
   protected string CreateHash()
-     => Convert.ToHexString(SHA256.HashData(ToBytes()));
+  {
+    using var stream = File != null ? File.OpenRead() : ToStream();
+    return Xvg.Hash.GetSha256(stream);
+  }
 
   protected abstract string CreatePrefix(string mime);
 
+  public abstract Stream ToStream();
   public abstract byte[] ToBytes();
 
   public string ToDataUrl()
@@ -204,6 +207,13 @@ public class BinaryMedia : MediaBase<Stream>
   protected override string CreatePrefix(string mime)
       => $"data:{mime};base64,";
 
+  public override Stream ToStream()
+  {
+    using var buffer = new MemoryStream();
+    Data.CopyTo(buffer);
+    return buffer;
+  }
+
   public override byte[] ToBytes()
   {
     using var buffer = new MemoryStream();
@@ -231,6 +241,9 @@ public class TextMedia : MediaBase<string>
 
   protected override string CreatePrefix(string mime)
       => $"data:{mime},";
+
+  public override Stream ToStream()
+    => new MemoryStream(Encoding.UTF8.GetBytes(Data));
 
   public override byte[] ToBytes()
       => Encoding.UTF8.GetBytes(Data);

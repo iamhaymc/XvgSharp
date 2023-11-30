@@ -2,9 +2,15 @@
   "files.exclude": {
     "**/__pycache__": true,
     "**/.editorconfig": true,
+    "**/.gitignore": true,
+    "**/.runsettings": true,
     "**/.vs": true,
+    "**/*.csproj.user": true,
+    "**/*.csproj": false,
+    "**/*.sln*": false,
     "**/bin": true,
-    "**/LICENSE": true,
     "**/obj": true,
+    "**/README.md": false,
+    "**/TestResults": false,
   }
 }

@@ -10,7 +10,7 @@ public class ImageNode : SceneNode,
   public bool Abstract { get; set; } = false;
   public bool AntiAlias { get; set; } = true;
   public string Url { get; set; }
-  public Box Frame { get; set; } = Box.Zero;
+  public Box? Frame { get; set; } = null;
   public BoxFitType Fit { get; set; } = FitStyle.Default;
   public Transform Transform { get; set; } = Transform.Identity;
   public string FilterId { get; set; } = null;

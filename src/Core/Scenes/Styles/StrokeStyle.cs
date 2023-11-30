@@ -2,7 +2,7 @@
 
 public class StrokeStyle
 {
-  public IColor? Color { get; set; }
+  public IColor Color { get; set; }
   public StrokeJointType? Joint { get; set; }
   public StrokeCapType? Cap { get; set; }
   public float? Width { get; set; }

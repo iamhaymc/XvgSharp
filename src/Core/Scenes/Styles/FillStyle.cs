@@ -2,7 +2,7 @@
 
 public class FillStyle
 {
-  public IColor? Color { get; set; }
+  public IColor Color { get; set; }
   public FillRuleType? Rule { get; set; }
 }
 

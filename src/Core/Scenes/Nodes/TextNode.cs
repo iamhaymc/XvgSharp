@@ -18,8 +18,7 @@ public class TextNode : SceneNode,
   public TextJustifyType Justify { get; set; } = TextStyle.DefaultJustify;
   public TextAlignType Align { get; set; } = TextStyle.DefaultAlign;
   public Transform Transform { get; set; } = Transform.Identity;
-  public ColorKind? FillColor { get; set; } = null;
-  public FillRuleType? FillRule { get; set; } = null;
+  public FillStyle Fill { get; set; } = new FillStyle();
   public string FilterId { get; set; } = null;
   public string ClipPathId  { get; set; } = null;
 
@@ -77,10 +76,10 @@ public class TextNode : SceneNode,
     throw new NotImplementedException();
   }
 
-  public TextNode UseFill(ColorKind color, FillRuleType rule)
+  public TextNode UseFill(IColor color = null, FillRuleType? rule = null)
   {
-    FillColor = color;
-    FillRule = rule;
+    Fill.Color = color;
+    Fill.Rule = rule;
     return this;
   }
 

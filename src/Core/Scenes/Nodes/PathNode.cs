@@ -11,12 +11,8 @@ public class PathNode : SceneNode,
   public bool AntiAlias { get; set; } = true;
   public Path Value { get; set; } = new Path();
   public Transform Transform { get; set; } = Transform.Identity;
-  public ColorKind? FillColor { get; set; } = null;
-  public FillRuleType? FillRule { get; set; } = null;
-  public ColorKind StrokeColor { get; set; } = StrokeStyle.DefaultColor;
-  public StrokeJointType StrokeJoint { get; set; } = StrokeStyle.DefaultJoint;
-  public StrokeCapType StrokeCap { get; set; } = StrokeStyle.DefaultCap;
-  public float StrokeWidth { get; set; } = StrokeStyle.DefaultWidth;
+  public FillStyle Fill { get; set; } = new FillStyle();
+  public StrokeStyle Stroke { get; set; } = new StrokeStyle();
   public string FilterId { get; set; } = null;
   public string ClipPathId  { get; set; } = null;
 
@@ -56,19 +52,19 @@ public class PathNode : SceneNode,
     throw new NotImplementedException();
   }
 
-  public PathNode UseFill(ColorKind color, FillRuleType rule)
+  public PathNode UseFill(IColor color = null, FillRuleType? rule = null)
   {
-    FillColor = color;
-    FillRule = rule;
+    Fill.Color = color;
+    Fill.Rule = rule;
     return this;
   }
 
-  public PathNode UseStroke(ColorKind color, StrokeJointType joint, StrokeCapType cap, float width)
+  public PathNode UseStroke(IColor color = null, StrokeJointType? joint = null, StrokeCapType? cap = null, float? width = null)
   {
-    StrokeColor = color;
-    StrokeWidth = width;
-    StrokeJoint = joint;
-    StrokeCap = cap;
+    Stroke.Color = color;
+    Stroke.Width = width;
+    Stroke.Joint = joint;
+    Stroke.Cap = cap;
     return this;
   }
 

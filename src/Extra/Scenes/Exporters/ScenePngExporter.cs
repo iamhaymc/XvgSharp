@@ -1,5 +1,5 @@
 namespace Xvg;
 
-internal class ScenePngExporter
+public class ScenePngExporter
 {
 }

@@ -5,7 +5,9 @@ using System.Text.RegularExpressions;
 namespace Xvg;
 
 public interface IColor
-{ }
+{
+  string ToHex(bool alpha = true);
+}
 
 public struct RgbColor : IColor
 {
@@ -25,19 +27,16 @@ public struct RgbColor : IColor
   public RgbColor Lerp(RgbColor v, double t)
     => Interpolate(this, v, t);
 
-  private static Regex HexRegex = new Regex("^#([0-9a-f]{3,8})$");
-
   public static RgbColor Interpolate(RgbColor a, RgbColor b, double t)
   {
-    Vector4 lerped = Vector4.Lerp(
-      new Vector4(a.R, a.B, a.G, a.A),
-      new Vector4(b.R, b.B, b.G, b.A), (float)t);
     return new RgbColor(
-      (byte)lerped.X,
-      (byte)lerped.Y,
-      (byte)lerped.Z,
-      (byte)lerped.W);
+      (byte)(a.R * (1 - t) + b.R * t),
+      (byte)(a.G * (1 - t) + b.G * t),
+      (byte)(a.B * (1 - t) + b.B * t),
+      (byte)(a.A * (1 - t) + b.A * t));
   }
+
+  private static readonly Regex HexRegex = new Regex("^#([0-9a-f]{3,8})$");
 
   public static RgbColor? FromHex(string hex)
   {
@@ -95,10 +94,6 @@ public struct RgbColor : IColor
   {
     return HclColor.FromColor(this);
   }
-
-  public static readonly RgbColor Zero = new RgbColor(0, 0, 0, 0);
-  public static readonly RgbColor Black = new RgbColor(0, 0, 0, 255);
-  public static readonly RgbColor White = new RgbColor(255, 255, 255, 255);
 }
 
 public struct XyzColor : IColor
@@ -115,6 +110,8 @@ public struct XyzColor : IColor
     Y = y;
     Z = z;
   }
+
+  public string ToHex(bool alpha = true) => ToColor(this).ToHex(alpha);
 
   internal const double Epsilon = 0.008856;
   internal const double Kappa = 903.3;
@@ -174,6 +171,8 @@ public struct LabColor : IColor
     A = a;
     B = b;
   }
+
+  public string ToHex(bool alpha = true) => ToColor(this).ToHex(alpha);
 
   public static LabColor FromColor(RgbColor color)
   {
@@ -235,6 +234,8 @@ public struct HclColor : IColor
     C = c;
     L = l;
   }
+
+  public string ToHex(bool alpha = true) => ToColor(this).ToHex(alpha);
 
   public HclColor Lerp(HclColor v, double t)
     => Interpolate(this, v, t);

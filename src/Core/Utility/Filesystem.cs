@@ -21,6 +21,7 @@ public static class FsPath
 
   public static string Relative(string fromPath, string toPath)
   {
+    // Relative() is not implemented in .NET Standard 2.0
     Uri fromUri = new Uri(fromPath);
     Uri toUri = new Uri(toPath);
     if (fromUri.Scheme != toUri.Scheme) return toPath;

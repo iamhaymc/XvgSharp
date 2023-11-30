@@ -1,6 +1,8 @@
-﻿namespace Xvg;
+﻿using System.Collections;
 
-public class Scene
+namespace Xvg;
+
+public class Scene : IEnumerable<ISceneNode>
 {
   public ViewNode Root { get; set; }
   public string Description { get; set; }
@@ -11,6 +13,6 @@ public class Scene
     Description = description;
   }
 
-  public IEnumerable<ISceneNode> YieldNodes()
-    => Root.YieldNodes();
+  public IEnumerator<ISceneNode> GetEnumerator() => Root.GetEnumerator();
+  IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 }

@@ -73,8 +73,8 @@ public struct Matrix3
 
   public static Matrix3 OfRotation(float radians)
   {
-    float c = MathF.Cos(radians);
-    float s = MathF.Sin(radians);
+    float c = (float)Math.Cos(radians);
+    float s = (float)Math.Sin(radians);
     return new Matrix3(
       c, -s, 0,
       s, c, 0,

@@ -7,16 +7,10 @@ public class ViewNode : ContainerNode,
 
   #region [Properties]
 
-  public bool Abstract { get; set; } = false;
-  public bool AntiAlias { get; set; } = true;
   public Box? Frame { get; set; } = null;
   public Box? Box { get; set; } = null;
   public BoxFitType Fit { get; set; } = FitStyle.Default;
-  public Transform Transform { get; set; } = Transform.Identity;
-  public ColorKind? FillColor { get; set; } = null;
-  public FillRuleType? FillRule { get; set; } = null;
-  public string FilterId { get; set; } = null;
-  public string ClipPathId { get; set; } = null;
+  public FillStyle Fill { get; set; } = new FillStyle();
 
   #endregion
 
@@ -40,8 +34,7 @@ public class ViewNode : ContainerNode,
     Fit = fix;
     return this;
   }
-
-  public ViewNode UseViewBox(Box box)
+    public ViewNode UseViewBox(Box box)
   {
     Box = box;
     return this;
@@ -58,10 +51,10 @@ public class ViewNode : ContainerNode,
   public ViewNode UseViewBox(Vector2 size)
      => UseViewBox(Xvg.Box.FromSize(size));
 
-  public ViewNode UseFill(ColorKind color, FillRuleType rule)
+  public ViewNode UseFill(IColor color = null, FillRuleType? rule = null)
   {
-    FillColor = color;
-    FillRule = rule;
+    Fill.Color = color;
+    Fill.Rule = rule;
     return this;
   }
 
